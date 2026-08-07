@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Mountain Escape</title>
+<style>
+body{margin:0;overflow:hidden;background:#87ceeb;font-family:Arial,sans-serif}
+canvas{display:block;margin:0 auto;background:linear-gradient(#87ceeb 0%,#bde0fe 40%,#8d99ae 40%,#6c757d 100%);border:4px solid #222}
+#info{position:absolute;top:10px;left:10px;color:#fff;font-size:22px;font-weight:bold;text-shadow:2px 2px 4px #000}
+#gameOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;text-align:center;font-size:36px;display:none;text-shadow:2px 2px 6px #000}
+#gameOver button{font-size:22px;padding:10px 20px;margin-top:20px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div id="info">Score: 0</div>
+
+<div id="gameOver">
+<div>GAME OVER</div>
+<div id="finalScore"></div>
+<button onclick="restartGame()">Play Again</button>
+</div>
+
+<canvas id="game" width="800" height="500"></canvas>
+
+<script>
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+
+// Load hero image (save your character as images/hero.png)
+const heroImage=new Image();
+heroImage.src="images/hero.png";
+
+const info=document.getElementById("info");
+const gameOverBox=document.getElementById("gameOver");
+const finalScore=document.getElementById("finalScore");
+
+let keys={};
+document.addEventListener("keydown",e=>keys[e.code]=true);
+document.addEventListener("keyup",e=>keys[e.code]=false);
+
+let player,rocks,score,gameOver,gravity,spawnTimer,speed;
+
+function resetGame(){
+player={
+x:canvas.width/2-35,
+y:canvas.height-130,
+width:70,
+height:110,
+vx:0,vy:0,speed:5,jumpPower:-14,grounded:true};
+rocks=[];score=0;gameOver=false;gravity=.7;spawnTimer=0;speed=4;
+gameOverBox.style.display="none";
+}
+
+function createRock(){
+const size=Math.random()*30+20;
+rocks.push({x:Math.random()*(canvas.width-size),y:-size,size:size,speed:speed+Math.random()*3});
+}
+
+function update(){
+if(gameOver)return;
+score++;info.textContent="Score: "+score;
+if(score%500===0)speed+=.5;
+player.vx=0;
+if(keys["ArrowLeft"])player.vx=-player.speed;
+if(keys["ArrowRight"])player.vx=player.speed;
+if(keys["Space"]&&player.grounded){player.vy=player.jumpPower;player.grounded=false;}
+player.x+=player.vx;
+player.vy+=gravity;
+player.y+=player.vy;
+if(player.y+player.height>=canvas.height-20){player.y=canvas.height-20-player.height;player.vy=0;player.grounded=true;}
+if(player.x<0)player.x=0;
+if(player.x+player.width>canvas.width)player.x=canvas.width-player.width;
+spawnTimer++;
+if(spawnTimer>40){createRock();spawnTimer=0;}
+for(let i=rocks.length-1;i>=0;i--){
+const r=rocks[i];r.y+=r.speed;
+if(player.x<r.x+r.size&&player.x+player.width>r.x&&player.y<r.y+r.size&&player.y+player.height>r.y)endGame();
+if(r.y>canvas.height)rocks.splice(i,1);
+}
+}
+
+function drawMountain(){
+ctx.fillStyle="#495057";
+ctx.beginPath();ctx.moveTo(0,500);ctx.lineTo(200,180);ctx.lineTo(400,500);ctx.closePath();ctx.fill();
+ctx.beginPath();ctx.moveTo(250,500);ctx.lineTo(520,120);ctx.lineTo(800,500);ctx.closePath();ctx.fill();
+ctx.fillStyle="white";
+ctx.beginPath();ctx.moveTo(480,150);ctx.lineTo(520,120);ctx.lineTo(560,170);ctx.closePath();ctx.fill();
+}
+function drawGround(){ctx.fillStyle="#3a5a40";ctx.fillRect(0,480,800,20);}
+function drawPlayer(){
+if(heroImage.complete&&heroImage.naturalWidth>0){
+ctx.drawImage(heroImage,player.x,player.y,player.width,player.height);
+}else{
+ctx.fillStyle="#2b2d42";
+ctx.fillRect(player.x,player.y,player.width,player.height);
+}}
+function drawRocks(){
+ctx.fillStyle="#6b705c";
+rocks.forEach(r=>{ctx.beginPath();ctx.arc(r.x+r.size/2,r.y+r.size/2,r.size/2,0,Math.PI*2);ctx.fill();});
+}
+function draw(){ctx.clearRect(0,0,800,500);drawMountain();drawGround();drawPlayer();drawRocks();}
+function gameLoop(){update();draw();requestAnimationFrame(gameLoop);}
+function endGame(){gameOver=true;finalScore.textContent="Final Score: "+score;gameOverBox.style.display="block";}
+function restartGame(){resetGame();}
+resetGame();gameLoop();
+</script>
+</body></html>
