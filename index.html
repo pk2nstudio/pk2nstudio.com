@@ -1,11 +1,192 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>PK2N | THE FIRST EVER PASHTUN SUPERHERO GAME</title>
 
 <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    overflow-x:hidden;
+    overflow-y:auto;
+    background:linear-gradient(to bottom,#7EC8FF 0%,#4FA3FF 55%,#1E88E5 100%);
+    color:white;
+}
+
+/* Navigation */
+
+nav{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:25px 70px;
+    position:absolute;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    font-size:34px;
+    font-weight:bold;
+    color:white;
+}
+
+.menu a{
+    color:white;
+    text-decoration:none;
+    margin-left:35px;
+    font-size:20px;
+    transition:.3s;
+}
+
+.menu a:hover{
+    color:#FFD54F;
+}
+
+/* Main */
+
+.container{
+    min-height:100vh;
+    height:auto;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:120px 20px 80px;
+}
+
+/* Clouds */
+
+.cloud{
+    position:absolute;
+    background:white;
+    border-radius:100px;
+    opacity:.9;
+    animation:float 35s linear infinite;
+}
+
+.cloud:before{
+    content:"";
+    position:absolute;
+    background:white;
+    width:70px;
+    height:70px;
+    left:20px;
+    top:-30px;
+    border-radius:50%;
+}
+
+.cloud:after{
+    content:"";
+    position:absolute;
+    background:white;
+    width:90px;
+    height:90px;
+    left:70px;
+    top:-40px;
+    border-radius:50%;
+}
+
+.c1{
+    width:180px;
+    height:60px;
+    top:120px;
+    left:-250px;
+}
+
+.c2{
+    width:220px;
+    height:70px;
+    top:250px;
+    left:-350px;
+    animation-duration:50s;
+}
+
+@keyframes float{
+
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(1800px);
+    }
+
+}
+
+/* Title */
+
+h1{
+    font-size:82px;
+    margin-bottom:15px;
+    text-shadow:4px 4px 10px rgba(0,0,0,.35);
+}
+
+.subtitle{
+    font-size:34px;
+    color:#FFF9C4;
+    margin-bottom:25px;
+}
+
+.description{
+    max-width:850px;
+    font-size:22px;
+    line-height:1.7;
+    margin-bottom:40px;
+}
+
+/* Hero */
+
+.hero{
+    font-size:150px;
+    margin-bottom:30px;
+    animation:bounce 2s infinite;
+}
+
+@keyframes bounce{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+
+}
+
+/* Button */
+
+.play{
+    display:inline-block;
+    padding:20px 55px;
+    background:#FFD54F;
+    color:#222;
+    font-size:28px;
+    font-weight:bold;
+    border-radius:14px;
+    text-decoration:none;
+    transition:.3s;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+
+.play:hover{
+    transform:scale(1.08);
+}
+
+/* Instructions */
+
 .instructions{
     margin-top:35px;
     padding:20px 30px;
@@ -23,318 +204,25 @@
     font-size:18px;
     margin:8px 0;
 }
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    font-family:Arial, Helvetica, sans-serif;
-
-    overflow-x:hidden;
-    overflow-y:auto;
-
-    background:linear-gradient(to bottom,#7EC8FF 0%,#4FA3FF 55%,#1E88E5 100%);
-
-    color:white;
-}
-
-}
-
-/* Navigation */
-
-nav{
-
-    width:100%;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    padding:25px 70px;
-
-    position:absolute;
-
-    top:0;
-
-    z-index:100;
-
-}
-
-.logo{
-
-    font-size:34px;
-
-    font-weight:bold;
-
-    color:white;
-
-}
-
-.menu a{
-
-    color:white;
-
-    text-decoration:none;
-
-    margin-left:35px;
-
-    font-size:20px;
-
-    transition:.3s;
-
-}
-
-.menu a:hover{
-
-    color:#FFD54F;
-
-}
-
-/* Main */
-
-.container{
-    min-height:100vh;
-    height:auto;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-
-    padding:120px 20px 80px;
-}
-
-}
-
-/* Clouds */
-
-.cloud{
-
-    position:absolute;
-
-    background:white;
-
-    border-radius:100px;
-
-    opacity:.9;
-
-    animation:float 35s linear infinite;
-
-}
-
-.cloud:before{
-
-    content:"";
-
-    position:absolute;
-
-    background:white;
-
-    width:70px;
-
-    height:70px;
-
-    left:20px;
-
-    top:-30px;
-
-    border-radius:50%;
-
-}
-
-.cloud:after{
-
-    content:"";
-
-    position:absolute;
-
-    background:white;
-
-    width:90px;
-
-    height:90px;
-
-    left:70px;
-
-    top:-40px;
-
-    border-radius:50%;
-
-}
-
-.c1{
-
-    width:180px;
-
-    height:60px;
-
-    top:120px;
-
-    left:-250px;
-
-}
-
-.c2{
-
-    width:220px;
-
-    height:70px;
-
-    top:250px;
-
-    left:-350px;
-
-    animation-duration:50s;
-
-}
-
-@keyframes float{
-
-    from{
-
-        transform:translateX(0);
-
-    }
-
-    to{
-
-        transform:translateX(1800px);
-
-    }
-
-}
-
-/* Title */
-
-h1{
-
-    font-size:82px;
-
-    margin-bottom:15px;
-
-    text-shadow:4px 4px 10px rgba(0,0,0,.35);
-
-}
-
-.subtitle{
-
-    font-size:34px;
-
-    color:#FFF9C4;
-
-    margin-bottom:25px;
-
-}
-
-.description{
-
-    max-width:850px;
-
-    font-size:22px;
-
-    line-height:1.7;
-
-    margin-bottom:40px;
-
-}
-
-/* Hero */
-
-.hero{
-
-    font-size:150px;
-
-    margin-bottom:30px;
-
-    animation:bounce 2s infinite;
-
-}
-
-@keyframes bounce{
-
-    0%,100%{
-
-        transform:translateY(0);
-
-    }
-
-    50%{
-
-        transform:translateY(-10px);
-
-    }
-
-}
-
-/* Button */
-
-.play{
-
-    display:inline-block;
-
-    padding:20px 55px;
-
-    background:#FFD54F;
-
-    color:#222;
-
-    font-size:28px;
-
-    font-weight:bold;
-
-    border-radius:14px;
-
-    text-decoration:none;
-
-    transition:.3s;
-
-    box-shadow:0 10px 25px rgba(0,0,0,.25);
-
-}
-
-.play:hover{
-
-    transform:scale(1.08);
-
-}
 
 /* Mountains */
 
 .mountains{
-
     position:absolute;
-
     bottom:0;
-
     width:100%;
-
     height:220px;
-
-    background:
-    polygon(0 100%,15% 35%,30% 100%,45% 25%,60% 100%,75% 40%,90% 100%,100% 60%,100% 100%);
 }
 
 /* Footer */
 
 footer{
-
-    position:absolute;
-
-    bottom:15px;
-
+    position:relative;
     width:100%;
-
     text-align:center;
-
     font-size:18px;
-
     color:white;
-
+    padding:15px 0;
 }
 
 </style>
@@ -348,77 +236,68 @@ footer{
 
 <nav>
 
-<div class="logo">
+    <div class="logo">
+        ⚔️ PK2N
+    </div>
 
-⚔️ PK2N
-
-</div>
-
-<div class="menu">
-
-<a href="#">Home</a>
-<a href="#">Games</a>
-<a href="#">About</a>
-<a href="#">Contact</a>
-
-</div>
+    <div class="menu">
+        <a href="#">Home</a>
+        <a href="#">Games</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </div>
 
 </nav>
 
 <div class="container">
 
-<h1>THE FIRST EVER PASHTUN SUPERHERO GAME</h1>
+    <h1>THE FIRST EVER PASHTUN SUPERHERO GAME</h1>
 
-<div class="subtitle">
+    <div class="subtitle">
+        Hero of the Mountains
+    </div>
 
-Hero of the Mountains
+    <div class="description">
 
-</div>
+        Welcome to <strong>Pashtun Hero</strong>, a browser adventure inspired by courage,
+        mountain landscapes, and heroic storytelling.
 
-<div class="description">
+        Climb dangerous mountains, avoid falling rocks, and begin your journey
+        in the first chapter of an expanding collection of browser games.
 
-Welcome to <strong>Pashtun Hero</strong>, a browser adventure inspired by courage, mountain landscapes, and heroic storytelling.
+    </div>
 
-Climb dangerous mountains, avoid falling rocks, and begin your journey in the first chapter of an expanding collection of browser games.
+    <div class="hero">
+        👳
+    </div>
 
-</div>
+    <a href="mountain_game_with_hero.html" class="play">
+        ▶ PLAY GAME
+    </a>
 
-<div class="hero">
+    <div class="instructions">
 
-👳
+        <h2>🎮 How to Play</h2>
 
-</div>
-<a href="mountain_game_with_hero.html" class="play">
-    ▶ PLAY GAME
-</a>
-<div class="instructions">
-    <h2>🎮 How to Play</h2>
+        <p>
+            <strong>← →</strong> Move left and right
+        </p>
 
-    <p>
-        <strong>← →</strong> Move left and right
-    </p>
+        <p>
+            <strong>SPACE</strong> Jump
+        </p>
 
-    <p>
-        <strong>SPACE</strong> Jump
-    </p>
+        <p>
+            Avoid the falling rocks and survive as long as possible!
+        </p>
 
-    <p>
-        Avoid the falling rocks and survive as long as possible!
-    </p>
-</div>
-
-▶ PLAY GAME
-
-</a>
+    </div>
 
 </div>
 
 <footer>
-
-⛰️ More adventures coming soon...
-
+    ⛰️ More adventures coming soon...
 </footer>
 
 </body>
-
 </html>
