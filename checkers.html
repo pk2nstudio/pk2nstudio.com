@@ -1,0 +1,2262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PK2N Studio - Checkers</title>
+
+<style>
+
+/* =====================================================
+   BASIC SETUP
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    color: white;
+
+    background:
+        radial-gradient(circle at 20% 20%, #395744 0%, transparent 35%),
+        radial-gradient(circle at 80% 80%, #5b3025 0%, transparent 35%),
+        linear-gradient(135deg, #172d2b, #251813);
+
+    display: flex;
+    justify-content: center;
+}
+
+.game {
+    width: 100%;
+    max-width: 950px;
+}
+
+
+/* =====================================================
+   PK2N STUDIO
+===================================================== */
+
+.logo {
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.logo h1 {
+    margin: 0;
+
+    font-size: clamp(32px, 6vw, 58px);
+
+    letter-spacing: 7px;
+
+    color: #e5bd55;
+
+    text-shadow:
+        0 2px #3b2415,
+        0 5px 12px #000;
+
+    font-weight: bold;
+}
+
+.logo::after {
+    content: "◆ ── ◆ ── ◆";
+
+    display: block;
+
+    margin-top: 8px;
+
+    color: #b98a39;
+
+    letter-spacing: 4px;
+
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   LANGUAGE BUTTON
+===================================================== */
+
+.language-box {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.language-button {
+    width: auto;
+
+    padding: 8px 18px;
+
+    margin: 0;
+
+    border: 2px solid #d5ad4c;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            #31584c,
+            #1c3932
+        );
+
+    color: #f0d274;
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+.language-button:hover {
+    filter: brightness(1.2);
+}
+
+
+/* =====================================================
+   LAYOUT
+===================================================== */
+
+.layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(450px, 650px)
+        220px;
+
+    gap: 20px;
+
+    align-items: start;
+}
+
+
+/* =====================================================
+   BOARD FRAME
+===================================================== */
+
+.board-frame {
+    padding: 13px;
+
+    border-radius: 20px;
+
+    background:
+        repeating-linear-gradient(
+            45deg,
+            #5b211e 0px,
+            #5b211e 7px,
+            #a27628 7px,
+            #a27628 10px,
+            #245047 10px,
+            #245047 14px
+        );
+
+    border: 4px solid #d1a846;
+
+    box-shadow:
+        0 20px 45px #000c,
+        inset 0 0 0 2px #6e431d;
+}
+
+
+/* =====================================================
+   DECORATIVE BORDER
+===================================================== */
+
+.board-frame::before {
+    content:
+        "◆  ◇  ◆  ◇  ◆  ◇  ◆  ◇  ◆  ◇  ◆";
+
+    display: block;
+
+    text-align: center;
+
+    padding: 7px 2px;
+
+    color: #e2c15d;
+
+    font-size: 12px;
+
+    letter-spacing: 4px;
+
+    background: #321b17;
+
+    border-bottom:
+        2px solid #c49a3d;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   BOARD
+===================================================== */
+
+.board {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(8, 1fr);
+
+    border:
+        8px solid #351d13;
+
+    overflow: hidden;
+
+    box-shadow:
+        inset 0 0 0 3px #c59b43;
+}
+
+
+/* =====================================================
+   SQUARES
+===================================================== */
+
+.square {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    z-index: 2;
+}
+
+.light {
+    background:
+        linear-gradient(
+            135deg,
+            #d8c18a,
+            #b69a61
+        );
+}
+
+.dark {
+    background:
+        linear-gradient(
+            135deg,
+            #315b4e,
+            #183b35
+        );
+}
+
+.dark::before {
+    content: "";
+
+    position: absolute;
+
+    width: 42%;
+    height: 42%;
+
+    border:
+        1px solid rgba(215,181,82,.16);
+
+    transform:
+        rotate(45deg);
+
+    pointer-events: none;
+}
+
+.dark::after {
+    content: "◆";
+
+    position: absolute;
+
+    font-size: 10px;
+
+    color:
+        rgba(218,184,83,.15);
+
+    pointer-events: none;
+}
+
+.dark:hover {
+    filter: brightness(1.18);
+}
+
+
+/* =====================================================
+   BOARD BRANDING
+===================================================== */
+
+.board::after {
+    content: "PK2N STUDIO";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    z-index: 3;
+
+    pointer-events: none;
+
+    padding:
+        7px 15px;
+
+    border:
+        2px solid rgba(222,188,85,.28);
+
+    border-radius: 5px;
+
+    color:
+        rgba(238,207,111,.30);
+
+    background:
+        rgba(20,35,31,.22);
+
+    font-size:
+        clamp(12px, 2.2vw, 21px);
+
+    letter-spacing:
+        3px;
+
+    font-weight:
+        bold;
+
+    text-shadow:
+        1px 2px 3px #0008;
+
+    white-space:
+        nowrap;
+}
+
+
+/* =====================================================
+   SELECTED SQUARE
+===================================================== */
+
+.selected {
+    box-shadow:
+        inset 0 0 0 5px #e5c052,
+        inset 0 0 20px rgba(229,192,82,.35);
+}
+
+
+/* =====================================================
+   POSSIBLE MOVE
+===================================================== */
+
+.move-option::after {
+    content: "";
+
+    width: 24%;
+    height: 24%;
+
+    border-radius: 50%;
+
+    background: #e1c25d;
+
+    position: absolute;
+
+    opacity: .9;
+
+    box-shadow:
+        0 0 10px #e1c25d;
+}
+
+
+/* =====================================================
+   CHECKER PIECES
+===================================================== */
+
+.piece {
+    width: 75%;
+    height: 75%;
+
+    border-radius: 50%;
+
+    position: relative;
+
+    z-index: 5;
+
+    box-shadow:
+        2px 5px 7px #000b,
+        inset 3px 3px 5px #fff5;
+
+    border:
+        3px solid #2a180f;
+
+    transition:
+        transform .15s ease;
+}
+
+.piece:hover {
+    transform:
+        scale(1.05);
+}
+
+
+/* =====================================================
+   PLAYER 1 PIECES
+===================================================== */
+
+.red-piece {
+    background:
+        radial-gradient(
+            circle at 35% 25%,
+            #ff806d 0%,
+            #c23a2d 28%,
+            #7b1f1d 68%,
+            #4b1516 100%
+        );
+}
+
+
+/* =====================================================
+   PLAYER 2 PIECES
+===================================================== */
+
+.black-piece {
+    background:
+        radial-gradient(
+            circle at 35% 25%,
+            #718a78 0%,
+            #344c42 30%,
+            #182d29 68%,
+            #0b1715 100%
+        );
+}
+
+
+/* =====================================================
+   GOLD PIECE RING
+===================================================== */
+
+.piece::before {
+    content: "";
+
+    position: absolute;
+
+    left: 14%;
+    top: 14%;
+
+    width: 72%;
+    height: 72%;
+
+    border-radius: 50%;
+
+    border:
+        2px solid rgba(230,193,82,.72);
+
+    box-shadow:
+        inset 0 0 0 2px rgba(45,25,15,.45);
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   NORMAL PIECE SYMBOL
+===================================================== */
+
+.piece:not(.king)::after {
+    content: "✦";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -55%);
+
+    color:
+        #e4c15c;
+
+    font-size:
+        clamp(17px, 3.5vw, 29px);
+
+    text-shadow:
+        1px 2px 2px #32170f;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   KING
+===================================================== */
+
+.king {
+    border-color:
+        #e2bd50;
+
+    box-shadow:
+        2px 5px 7px #000b,
+        0 0 12px rgba(224,185,76,.35),
+        inset 3px 3px 5px #fff5;
+}
+
+.king::after {
+    content: "♛";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -55%);
+
+    color:
+        #f4d36b;
+
+    font-size:
+        clamp(22px, 4vw, 36px);
+
+    text-shadow:
+        1px 2px 2px #28140c;
+}
+
+
+/* =====================================================
+   CONTROL PANEL
+===================================================== */
+
+.panel {
+    padding: 15px;
+
+    border:
+        3px solid #8d682b;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #402619,
+            #21150e
+        );
+
+    box-shadow:
+        0 10px 25px #0009,
+        inset 0 0 0 2px #5e3d20;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   CURRENT TURN
+===================================================== */
+
+.turn-label {
+    color:
+        #d8b85a;
+
+    font-size:
+        12px;
+
+    letter-spacing:
+        2px;
+
+    margin-bottom:
+        8px;
+}
+
+.current-player {
+    font-size:
+        20px;
+
+    font-weight:
+        bold;
+
+    color:
+        #f0d274;
+
+    margin-bottom:
+        12px;
+}
+
+
+/* =====================================================
+   PLAYER SCORE CARDS
+===================================================== */
+
+.player-card {
+    padding:
+        12px 8px;
+
+    margin-bottom:
+        10px;
+
+    border:
+        2px solid #735329;
+
+    border-radius:
+        10px;
+
+    background:
+        rgba(0,0,0,.25);
+
+    transition:
+        .2s ease;
+}
+
+.player-card.active {
+    border-color:
+        #e0b957;
+
+    box-shadow:
+        0 0 10px
+        rgba(216,169,52,.35);
+
+    transform:
+        scale(1.02);
+}
+
+.player-name {
+    font-size:
+        14px;
+
+    color:
+        #e5cf9d;
+
+    font-weight:
+        bold;
+}
+
+.player-count-label {
+    margin-top:
+        5px;
+
+    font-size:
+        11px;
+
+    color:
+        #bca97e;
+
+    letter-spacing:
+        1px;
+}
+
+.piece-count {
+    font-size:
+        27px;
+
+    color:
+        #f0d274;
+
+    font-weight:
+        bold;
+
+    margin-top:
+        2px;
+}
+
+
+/* =====================================================
+   DECORATION
+===================================================== */
+
+.pattern {
+    color:
+        #b98a39;
+
+    letter-spacing:
+        5px;
+
+    margin:
+        10px 0;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status {
+    min-height:
+        78px;
+
+    color:
+        #e9d9ac;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.5;
+}
+
+
+/* =====================================================
+   NEW GAME BUTTON
+===================================================== */
+
+.new-game {
+    width:
+        100%;
+
+    padding:
+        12px;
+
+    margin-top:
+        8px;
+
+    border-radius:
+        9px;
+
+    border:
+        2px solid #e0b957;
+
+    background:
+        linear-gradient(
+            #a93427,
+            #6e1f1a
+        );
+
+    color:
+        white;
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-size:
+        14px;
+
+    font-weight:
+        bold;
+
+    cursor:
+        pointer;
+}
+
+.new-game:hover {
+    filter:
+        brightness(1.15);
+}
+
+
+/* =====================================================
+   INSTRUCTIONS
+===================================================== */
+
+.instructions {
+    margin-top:
+        12px;
+
+    font-size:
+        11px;
+
+    color:
+        #cdbb91;
+
+    line-height:
+        1.6;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer {
+    text-align:
+        center;
+
+    margin-top:
+        15px;
+
+    color:
+        #d7c18b;
+
+    font-size:
+        12px;
+
+    letter-spacing:
+        2px;
+}
+
+
+/* =====================================================
+   PASHTO / RTL
+===================================================== */
+
+[dir="rtl"] {
+    font-family:
+        Arial,
+        Tahoma,
+        sans-serif;
+}
+
+[dir="rtl"] .logo h1 {
+    direction:
+        ltr;
+}
+
+[dir="rtl"] .instructions {
+    line-height:
+        1.9;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:800px) {
+
+    .layout {
+        grid-template-columns:
+            1fr;
+    }
+
+    .panel {
+        max-width:
+            500px;
+
+        width:
+            100%;
+
+        margin:
+            auto;
+    }
+
+    .board-frame::before {
+        font-size:
+            9px;
+
+        letter-spacing:
+            2px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="game">
+
+
+<!-- =====================================================
+     PK2N STUDIO
+===================================================== -->
+
+<div class="logo">
+
+    <h1>
+        PK2N STUDIO
+    </h1>
+
+</div>
+
+
+<!-- =====================================================
+     LANGUAGE SWITCH
+===================================================== -->
+
+<div class="language-box">
+
+    <button
+        id="languageButton"
+        class="language-button">
+
+        پښتو
+
+    </button>
+
+</div>
+
+
+<div class="layout">
+
+
+<!-- =====================================================
+     BOARD
+===================================================== -->
+
+<div class="board-frame">
+
+    <div
+        id="board"
+        class="board">
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CONTROL PANEL
+===================================================== -->
+
+<div class="panel">
+
+
+    <div
+        id="turnLabel"
+        class="turn-label">
+
+        CURRENT TURN
+
+    </div>
+
+
+    <div
+        id="currentPlayer"
+        class="current-player">
+
+        🔴 PLAYER 1
+
+    </div>
+
+
+    <!-- PLAYER 1 -->
+
+    <div
+        id="player1Card"
+        class="player-card active">
+
+        <div
+            id="player1Name"
+            class="player-name">
+
+            🔴 PLAYER 1
+
+        </div>
+
+        <div
+            id="player1Label"
+            class="player-count-label">
+
+            PIECES
+
+        </div>
+
+        <div
+            id="player1Pieces"
+            class="piece-count">
+
+            12
+
+        </div>
+
+    </div>
+
+
+    <!-- PLAYER 2 -->
+
+    <div
+        id="player2Card"
+        class="player-card">
+
+        <div
+            id="player2Name"
+            class="player-name">
+
+            ⚫ PLAYER 2
+
+        </div>
+
+        <div
+            id="player2Label"
+            class="player-count-label">
+
+            PIECES
+
+        </div>
+
+        <div
+            id="player2Pieces"
+            class="piece-count">
+
+            12
+
+        </div>
+
+    </div>
+
+
+    <div class="pattern">
+        ◆ ◆ ◆
+    </div>
+
+
+    <div
+        id="status"
+        class="status">
+
+        Player 1:
+        select one of your pieces.
+
+    </div>
+
+
+    <button
+        id="newGame"
+        class="new-game">
+
+        ↻ NEW GAME
+
+    </button>
+
+
+    <div
+        id="instructions"
+        class="instructions">
+
+        Click one of your pieces.
+        <br>
+        Then click a highlighted square to move.
+        <br><br>
+        Capture your opponent's pieces.
+        <br><br>
+        Reach the opposite side to become a King.
+
+    </div>
+
+
+</div>
+
+</div>
+
+
+<div class="footer">
+
+    PK2N STUDIO
+
+</div>
+
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   PK2N STUDIO CHECKERS
+===================================================== */
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const board =
+    document.getElementById("board");
+
+const currentPlayerElement =
+    document.getElementById("currentPlayer");
+
+const player1PiecesElement =
+    document.getElementById("player1Pieces");
+
+const player2PiecesElement =
+    document.getElementById("player2Pieces");
+
+const player1Card =
+    document.getElementById("player1Card");
+
+const player2Card =
+    document.getElementById("player2Card");
+
+const statusElement =
+    document.getElementById("status");
+
+const newGameButton =
+    document.getElementById("newGame");
+
+const languageButton =
+    document.getElementById("languageButton");
+
+const turnLabel =
+    document.getElementById("turnLabel");
+
+const player1Name =
+    document.getElementById("player1Name");
+
+const player2Name =
+    document.getElementById("player2Name");
+
+const player1Label =
+    document.getElementById("player1Label");
+
+const player2Label =
+    document.getElementById("player2Label");
+
+const instructions =
+    document.getElementById("instructions");
+
+
+/* =====================================================
+   GAME VARIABLES
+===================================================== */
+
+let pieces = [];
+
+let currentPlayer = 1;
+
+let selectedPiece = null;
+
+let possibleMoves = [];
+
+let gameOver = false;
+
+
+/* =====================================================
+   LANGUAGE
+===================================================== */
+
+let language = "en";
+
+
+const translations = {
+
+    en: {
+
+        turn:
+            "CURRENT TURN",
+
+        player1:
+            "🔴 PLAYER 1",
+
+        player2:
+            "⚫ PLAYER 2",
+
+        pieces:
+            "PIECES",
+
+        newGame:
+            "↻ NEW GAME",
+
+        instructions:
+            "Click one of your pieces.<br>" +
+            "Then click a highlighted square to move." +
+            "<br><br>" +
+            "Capture your opponent's pieces." +
+            "<br><br>" +
+            "Reach the opposite side to become a King.",
+
+        player1Start:
+            "Player 1: select one of your pieces.",
+
+        player2Turn:
+            "Player 2's turn. Select a piece.",
+
+        player1Turn:
+            "Player 1's turn. Select a piece.",
+
+        chooseMove:
+            "Choose a highlighted square.",
+
+        cannotMove:
+            "That piece cannot move.",
+
+        captured:
+            "🎯 Piece captured!",
+
+        player1Wins:
+            "🏆 PLAYER 1 WINS!",
+
+        player2Wins:
+            "🏆 PLAYER 2 WINS!",
+
+        language:
+            "پښتو"
+
+    },
+
+
+    ps: {
+
+        turn:
+            "اوسنی وار",
+
+        player1:
+            "🔴 لوبغاړی ۱",
+
+        player2:
+            "⚫ لوبغاړی ۲",
+
+        pieces:
+            "مهرې",
+
+        newGame:
+            "↻ نوې لوبه",
+
+        instructions:
+            "د خپلې یوې مهرې باندې کلیک وکړئ.<br>" +
+            "بیا په روښانه شوې خانه کلیک وکړئ." +
+            "<br><br>" +
+            "د خپل سیال مهرې ونیسئ." +
+            "<br><br>" +
+            "د تختې بلې غاړې ته ورسېږئ تر څو پاچا شئ.",
+
+        player1Start:
+            "لوبغاړی ۱: خپله یوه مهره وټاکئ.",
+
+        player2Turn:
+            "د لوبغاړي ۲ وار دی. یوه مهره وټاکئ.",
+
+        player1Turn:
+            "د لوبغاړي ۱ وار دی. یوه مهره وټاکئ.",
+
+        chooseMove:
+            "یوه روښانه شوې خانه وټاکئ.",
+
+        cannotMove:
+            "دا مهره حرکت نشي کولی.",
+
+        captured:
+            "🎯 مهره ونیول شوه!",
+
+        player1Wins:
+            "🏆 لوبغاړی ۱ بریالی شو!",
+
+        player2Wins:
+            "🏆 لوبغاړی ۲ بریالی شو!",
+
+        language:
+            "English"
+
+    }
+
+};
+
+
+/* =====================================================
+   UPDATE LANGUAGE
+===================================================== */
+
+function updateLanguage() {
+
+    const t =
+        translations[language];
+
+
+    document.documentElement.lang =
+        language === "ps"
+            ? "ps"
+            : "en";
+
+
+    document.documentElement.dir =
+        language === "ps"
+            ? "rtl"
+            : "ltr";
+
+
+    turnLabel.textContent =
+        t.turn;
+
+
+    player1Name.textContent =
+        t.player1;
+
+
+    player2Name.textContent =
+        t.player2;
+
+
+    player1Label.textContent =
+        t.pieces;
+
+
+    player2Label.textContent =
+        t.pieces;
+
+
+    newGameButton.textContent =
+        t.newGame;
+
+
+    instructions.innerHTML =
+        t.instructions;
+
+
+    languageButton.textContent =
+        t.language;
+
+
+    updateTurn();
+
+
+    if (!gameOver) {
+
+        if (
+            selectedPiece &&
+            possibleMoves.length > 0
+        ) {
+
+            statusElement.textContent =
+                t.chooseMove;
+
+        }
+
+        else {
+
+            if (
+                currentPlayer === 1
+            ) {
+
+                statusElement.textContent =
+                    t.player1Start;
+
+            }
+
+            else {
+
+                statusElement.textContent =
+                    t.player2Turn;
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   LANGUAGE BUTTON
+===================================================== */
+
+languageButton.addEventListener(
+    "click",
+    function() {
+
+        if (
+            language === "en"
+        ) {
+
+            language = "ps";
+
+        }
+
+        else {
+
+            language = "en";
+
+        }
+
+        updateLanguage();
+
+    }
+);
+
+
+/* =====================================================
+   CREATE PIECE
+===================================================== */
+
+function createPiece(
+    player,
+    row,
+    col
+) {
+
+    return {
+
+        player:
+            player,
+
+        row:
+            row,
+
+        col:
+            col,
+
+        king:
+            false
+
+    };
+
+}
+
+
+/* =====================================================
+   NEW GAME
+===================================================== */
+
+function newGame() {
+
+    pieces = [];
+
+    currentPlayer = 1;
+
+    selectedPiece = null;
+
+    possibleMoves = [];
+
+    gameOver = false;
+
+
+    /* PLAYER 2 */
+
+    for (
+        let row = 0;
+        row < 3;
+        row++
+    ) {
+
+        for (
+            let col = 0;
+            col < 8;
+            col++
+        ) {
+
+            if (
+                (row + col) % 2 === 1
+            ) {
+
+                pieces.push(
+                    createPiece(
+                        2,
+                        row,
+                        col
+                    )
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /* PLAYER 1 */
+
+    for (
+        let row = 5;
+        row < 8;
+        row++
+    ) {
+
+        for (
+            let col = 0;
+            col < 8;
+            col++
+        ) {
+
+            if (
+                (row + col) % 2 === 1
+            ) {
+
+                pieces.push(
+                    createPiece(
+                        1,
+                        row,
+                        col
+                    )
+                );
+
+            }
+
+        }
+
+    }
+
+
+    updateTurn();
+
+    updateScores();
+
+    updateLanguage();
+
+    renderBoard();
+
+}
+
+
+/* =====================================================
+   RENDER BOARD
+===================================================== */
+
+function renderBoard() {
+
+    board.innerHTML = "";
+
+
+    for (
+        let row = 0;
+        row < 8;
+        row++
+    ) {
+
+        for (
+            let col = 0;
+            col < 8;
+            col++
+        ) {
+
+            const square =
+                document.createElement(
+                    "div"
+                );
+
+
+            if (
+                (row + col) % 2 === 0
+            ) {
+
+                square.className =
+                    "square light";
+
+            }
+
+            else {
+
+                square.className =
+                    "square dark";
+
+            }
+
+
+            if (
+                selectedPiece &&
+
+                selectedPiece.row === row &&
+
+                selectedPiece.col === col
+            ) {
+
+                square.classList.add(
+                    "selected"
+                );
+
+            }
+
+
+            if (
+                possibleMoves.some(
+                    move =>
+                        move.row === row &&
+                        move.col === col
+                )
+            ) {
+
+                square.classList.add(
+                    "move-option"
+                );
+
+            }
+
+
+            square.addEventListener(
+                "click",
+                () =>
+                    handleSquareClick(
+                        row,
+                        col
+                    )
+            );
+
+
+            const piece =
+                getPiece(
+                    row,
+                    col
+                );
+
+
+            if (piece) {
+
+                const pieceElement =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                pieceElement.className =
+                    "piece";
+
+
+                if (
+                    piece.player === 1
+                ) {
+
+                    pieceElement.classList.add(
+                        "red-piece"
+                    );
+
+                }
+
+                else {
+
+                    pieceElement.classList.add(
+                        "black-piece"
+                    );
+
+                }
+
+
+                if (
+                    piece.king
+                ) {
+
+                    pieceElement.classList.add(
+                        "king"
+                    );
+
+                }
+
+
+                square.appendChild(
+                    pieceElement
+                );
+
+            }
+
+
+            board.appendChild(
+                square
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   GET PIECE
+===================================================== */
+
+function getPiece(
+    row,
+    col
+) {
+
+    return pieces.find(
+        piece =>
+            piece.row === row &&
+            piece.col === col
+    );
+
+}
+
+
+/* =====================================================
+   HANDLE CLICK
+===================================================== */
+
+function handleSquareClick(
+    row,
+    col
+) {
+
+    if (gameOver) {
+        return;
+    }
+
+
+    const clickedPiece =
+        getPiece(
+            row,
+            col
+        );
+
+
+    if (
+        clickedPiece &&
+
+        clickedPiece.player ===
+        currentPlayer
+    ) {
+
+        selectedPiece =
+            clickedPiece;
+
+
+        possibleMoves =
+            getValidMoves(
+                clickedPiece
+            );
+
+
+        if (
+            possibleMoves.length === 0
+        ) {
+
+            statusElement.textContent =
+                translations[language]
+                .cannotMove;
+
+        }
+
+        else {
+
+            statusElement.textContent =
+                translations[language]
+                .chooseMove;
+
+        }
+
+
+        renderBoard();
+
+        return;
+
+    }
+
+
+    if (
+        selectedPiece
+    ) {
+
+        const move =
+            possibleMoves.find(
+                option =>
+                    option.row === row &&
+                    option.col === col
+            );
+
+
+        if (move) {
+
+            makeMove(
+                selectedPiece,
+                move
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   VALID MOVES
+===================================================== */
+
+function getValidMoves(
+    piece
+) {
+
+    const moves = [];
+
+    let directions;
+
+
+    if (
+        piece.king
+    ) {
+
+        directions = [
+            -1,
+            1
+        ];
+
+    }
+
+    else if (
+        piece.player === 1
+    ) {
+
+        directions = [-1];
+
+    }
+
+    else {
+
+        directions = [1];
+
+    }
+
+
+    directions.forEach(
+        direction => {
+
+            const left =
+                getMove(
+                    piece,
+                    direction,
+                    -1
+                );
+
+            const right =
+                getMove(
+                    piece,
+                    direction,
+                    1
+                );
+
+
+            if (left) {
+                moves.push(left);
+            }
+
+            if (right) {
+                moves.push(right);
+            }
+
+        }
+    );
+
+
+    directions.forEach(
+        direction => {
+
+            const left =
+                getCaptureMove(
+                    piece,
+                    direction,
+                    -1
+                );
+
+            const right =
+                getCaptureMove(
+                    piece,
+                    direction,
+                    1
+                );
+
+
+            if (left) {
+                moves.push(left);
+            }
+
+            if (right) {
+                moves.push(right);
+            }
+
+        }
+    );
+
+
+    return moves;
+
+}
+
+
+/* =====================================================
+   NORMAL MOVE
+===================================================== */
+
+function getMove(
+    piece,
+    direction,
+    columnDirection
+) {
+
+    const row =
+        piece.row +
+        direction;
+
+    const col =
+        piece.col +
+        columnDirection;
+
+
+    if (
+        row < 0 ||
+        row > 7 ||
+        col < 0 ||
+        col > 7
+    ) {
+
+        return null;
+
+    }
+
+
+    if (
+        !getPiece(
+            row,
+            col
+        )
+    ) {
+
+        return {
+
+            row:
+                row,
+
+            col:
+                col,
+
+            capture:
+                null
+
+        };
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =====================================================
+   CAPTURE MOVE
+===================================================== */
+
+function getCaptureMove(
+    piece,
+    direction,
+    columnDirection
+) {
+
+    const middleRow =
+        piece.row +
+        direction;
+
+    const middleCol =
+        piece.col +
+        columnDirection;
+
+    const targetRow =
+        piece.row +
+        direction * 2;
+
+    const targetCol =
+        piece.col +
+        columnDirection * 2;
+
+
+    if (
+        targetRow < 0 ||
+        targetRow > 7 ||
+        targetCol < 0 ||
+        targetCol > 7
+    ) {
+
+        return null;
+
+    }
+
+
+    const middlePiece =
+        getPiece(
+            middleRow,
+            middleCol
+        );
+
+    const targetPiece =
+        getPiece(
+            targetRow,
+            targetCol
+        );
+
+
+    if (
+        middlePiece &&
+
+        middlePiece.player !==
+        piece.player &&
+
+        !targetPiece
+    ) {
+
+        return {
+
+            row:
+                targetRow,
+
+            col:
+                targetCol,
+
+            capture:
+                middlePiece
+
+        };
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =====================================================
+   MAKE MOVE
+===================================================== */
+
+function makeMove(
+    piece,
+    move
+) {
+
+    piece.row =
+        move.row;
+
+    piece.col =
+        move.col;
+
+
+    if (
+        move.capture
+    ) {
+
+        pieces =
+            pieces.filter(
+                item =>
+                    item !==
+                    move.capture
+            );
+
+
+        statusElement.textContent =
+            translations[language]
+            .captured;
+
+    }
+
+
+    /* KING */
+
+    if (
+        piece.player === 1 &&
+        piece.row === 0
+    ) {
+
+        piece.king = true;
+
+    }
+
+
+    if (
+        piece.player === 2 &&
+        piece.row === 7
+    ) {
+
+        piece.king = true;
+
+    }
+
+
+    selectedPiece = null;
+
+    possibleMoves = [];
+
+
+    if (
+        checkWinner()
+    ) {
+
+        updateScores();
+
+        renderBoard();
+
+        return;
+
+    }
+
+
+    /* CHANGE PLAYER */
+
+    if (
+        currentPlayer === 1
+    ) {
+
+        currentPlayer = 2;
+
+    }
+
+    else {
+
+        currentPlayer = 1;
+
+    }
+
+
+    updateTurn();
+
+    updateScores();
+
+    renderBoard();
+
+
+    if (
+        currentPlayer === 1
+    ) {
+
+        statusElement.textContent =
+            translations[language]
+            .player1Turn;
+
+    }
+
+    else {
+
+        statusElement.textContent =
+            translations[language]
+            .player2Turn;
+
+    }
+
+}
+
+
+/* =====================================================
+   CHECK WINNER
+===================================================== */
+
+function checkWinner() {
+
+    const player1Count =
+        pieces.filter(
+            piece =>
+                piece.player === 1
+        ).length;
+
+
+    const player2Count =
+        pieces.filter(
+            piece =>
+                piece.player === 2
+        ).length;
+
+
+    if (
+        player1Count === 0
+    ) {
+
+        gameOver = true;
+
+        statusElement.textContent =
+            translations[language]
+            .player2Wins;
+
+        return true;
+
+    }
+
+
+    if (
+        player2Count === 0
+    ) {
+
+        gameOver = true;
+
+        statusElement.textContent =
+            translations[language]
+            .player1Wins;
+
+        return true;
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =====================================================
+   UPDATE TURN
+===================================================== */
+
+function updateTurn() {
+
+    const t =
+        translations[language];
+
+
+    if (
+        currentPlayer === 1
+    ) {
+
+        currentPlayerElement.textContent =
+            t.player1;
+
+        player1Card.classList.add(
+            "active"
+        );
+
+        player2Card.classList.remove(
+            "active"
+        );
+
+    }
+
+    else {
+
+        currentPlayerElement.textContent =
+            t.player2;
+
+        player2Card.classList.add(
+            "active"
+        );
+
+        player1Card.classList.remove(
+            "active"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   UPDATE SCORES
+===================================================== */
+
+function updateScores() {
+
+    const player1Count =
+        pieces.filter(
+            piece =>
+                piece.player === 1
+        ).length;
+
+
+    const player2Count =
+        pieces.filter(
+            piece =>
+                piece.player === 2
+        ).length;
+
+
+    player1PiecesElement.textContent =
+        player1Count;
+
+    player2PiecesElement.textContent =
+        player2Count;
+
+}
+
+
+/* =====================================================
+   NEW GAME
+===================================================== */
+
+newGameButton.addEventListener(
+    "click",
+    newGame
+);
+
+
+/* =====================================================
+   START GAME
+===================================================== */
+
+newGame();
+
+</script>
+
+</body>
+</html>
