@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PK2N Studio - Tic Tac Toe</title>
+
+<style>
+
+/* =====================================================
+   BASIC SETUP
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    color: white;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            #395744 0%,
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            #5b3025 0%,
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #172d2b,
+            #251813
+        );
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* =====================================================
+   GAME CONTAINER
+===================================================== */
+
+.game {
+    width: 100%;
+    max-width: 850px;
+}
+
+
+/* =====================================================
+   PK2N STUDIO BRANDING
+===================================================== */
+
+.logo {
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.logo h1 {
+    margin: 0;
+
+    font-size: clamp(32px, 7vw, 58px);
+
+    letter-spacing: 7px;
+
+    color: #e5bd55;
+
+    text-shadow:
+        0 2px #3b2415,
+        0 5px 12px #000;
+
+    font-weight: bold;
+}
+
+.logo::after {
+    content: "◆ ── ◆ ── ◆";
+
+    display: block;
+
+    margin-top: 7px;
+
+    color: #b98a39;
+
+    letter-spacing: 4px;
+
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   LANGUAGE BUTTON
+===================================================== */
+
+.language-box {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.language-button {
+    padding: 8px 20px;
+
+    border: 2px solid #d5ad4c;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            #31584c,
+            #1c3932
+        );
+
+    color: #f0d274;
+
+    font-family: Georgia, serif;
+
+    cursor: pointer;
+}
+
+.language-button:hover {
+    filter: brightness(1.2);
+}
+
+
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
+
+.layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(320px, 550px)
+        220px;
+
+    gap: 20px;
+
+    align-items: start;
+
+    justify-content: center;
+}
+
+
+/* =====================================================
+   BOARD FRAME
+===================================================== */
+
+.board-frame {
+    padding: 13px;
+
+    border-radius: 20px;
+
+    background:
+        repeating-linear-gradient(
+            45deg,
+            #5b211e 0px,
+            #5b211e 7px,
+            #a27628 7px,
+            #a27628 10px,
+            #245047 10px,
+            #245047 14px
+        );
+
+    border: 4px solid #d1a846;
+
+    box-shadow:
+        0 20px 45px #000c,
+        inset 0 0 0 2px #6e431d;
+}
+
+
+/* =====================================================
+   BOARD DECORATION
+===================================================== */
+
+.board-frame::before {
+    content:
+        "◆  ◇  ◆  ◇  ◆  ◇  ◆  ◇  ◆";
+
+    display: block;
+
+    text-align: center;
+
+    padding: 7px 2px;
+
+    color: #e2c15d;
+
+    font-size: 12px;
+
+    letter-spacing: 4px;
+
+    background: #321b17;
+
+    border-bottom:
+        2px solid #c49a3d;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   TIC TAC TOE BOARD
+===================================================== */
+
+.board {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    grid-template-rows:
+        repeat(3, 1fr);
+
+    padding: 10px;
+
+    gap: 8px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1c3932,
+            #2e2118
+        );
+
+    border:
+        7px solid #351d13;
+
+    box-shadow:
+        inset 0 0 0 3px #c59b43;
+}
+
+
+/* =====================================================
+   CELLS
+===================================================== */
+
+.cell {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    border:
+        2px solid #98742f;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #d8c18a,
+            #ad925b
+        );
+
+    box-shadow:
+        inset 0 0 12px rgba(0,0,0,.25);
+
+    transition:
+        transform .12s ease,
+        filter .12s ease;
+}
+
+.cell:hover {
+    filter: brightness(1.15);
+
+    transform:
+        scale(1.02);
+}
+
+
+/* =====================================================
+   PATTERN ON CELLS
+===================================================== */
+
+.cell::before {
+    content: "◆";
+
+    position: absolute;
+
+    top: 8px;
+    right: 10px;
+
+    color:
+        rgba(89,57,25,.15);
+
+    font-size: 14px;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   X AND O
+===================================================== */
+
+.mark {
+    position: relative;
+
+    z-index: 2;
+
+    font-size:
+        clamp(55px, 12vw, 105px);
+
+    line-height: 1;
+
+    font-weight:
+        bold;
+
+    user-select: none;
+
+    text-shadow:
+        3px 4px 4px rgba(0,0,0,.45);
+}
+
+
+/* X */
+
+.x {
+    color:
+        #7b231c;
+}
+
+
+/* O */
+
+.o {
+    color:
+        #245047;
+}
+
+
+/* =====================================================
+   WINNING CELLS
+===================================================== */
+
+.winner {
+    animation:
+        winnerPulse .8s infinite alternate;
+
+    border-color:
+        #e3bd51;
+
+    box-shadow:
+        0 0 20px
+        rgba(229,189,81,.8),
+        inset 0 0 15px
+        rgba(229,189,81,.3);
+}
+
+@keyframes winnerPulse {
+
+    from {
+        transform:
+            scale(1);
+    }
+
+    to {
+        transform:
+            scale(1.04);
+    }
+
+}
+
+
+/* =====================================================
+   SIDE PANEL
+===================================================== */
+
+.panel {
+    padding: 15px;
+
+    border:
+        3px solid #8d682b;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #402619,
+            #21150e
+        );
+
+    box-shadow:
+        0 10px 25px #0009,
+        inset 0 0 0 2px #5e3d20;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   TURN
+===================================================== */
+
+.turn-label {
+    color:
+        #d8b85a;
+
+    font-size:
+        12px;
+
+    letter-spacing:
+        2px;
+
+    margin-bottom:
+        8px;
+}
+
+.current-player {
+    font-size:
+        21px;
+
+    font-weight:
+        bold;
+
+    color:
+        #f0d274;
+
+    margin-bottom:
+        15px;
+}
+
+
+/* =====================================================
+   PLAYER CARDS
+===================================================== */
+
+.player-card {
+    padding:
+        12px 8px;
+
+    margin-bottom:
+        10px;
+
+    border:
+        2px solid #735329;
+
+    border-radius:
+        10px;
+
+    background:
+        rgba(0,0,0,.25);
+
+    transition:
+        .2s ease;
+}
+
+.player-card.active {
+    border-color:
+        #e0b957;
+
+    box-shadow:
+        0 0 10px
+        rgba(216,169,52,.35);
+
+    transform:
+        scale(1.02);
+}
+
+.player-name {
+    font-size:
+        15px;
+
+    color:
+        #e5cf9d;
+
+    font-weight:
+        bold;
+}
+
+.player-description {
+    margin-top:
+        5px;
+
+    font-size:
+        12px;
+
+    color:
+        #bca97e;
+}
+
+
+/* =====================================================
+   DECORATION
+===================================================== */
+
+.pattern {
+    color:
+        #b98a39;
+
+    letter-spacing:
+        5px;
+
+    margin:
+        10px 0;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status {
+    min-height:
+        80px;
+
+    color:
+        #e9d9ac;
+
+    font-size:
+        14px;
+
+    line-height:
+        1.5;
+}
+
+
+/* =====================================================
+   NEW GAME
+===================================================== */
+
+.new-game {
+    width:
+        100%;
+
+    padding:
+        12px;
+
+    margin-top:
+        8px;
+
+    border-radius:
+        9px;
+
+    border:
+        2px solid #e0b957;
+
+    background:
+        linear-gradient(
+            #a93427,
+            #6e1f1a
+        );
+
+    color:
+        white;
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-size:
+        14px;
+
+    font-weight:
+        bold;
+
+    cursor:
+        pointer;
+}
+
+.new-game:hover {
+    filter:
+        brightness(1.15);
+}
+
+
+/* =====================================================
+   INSTRUCTIONS
+===================================================== */
+
+.instructions {
+    margin-top:
+        12px;
+
+    font-size:
+        11px;
+
+    color:
+        #cdbb91;
+
+    line-height:
+        1.6;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer {
+    text-align:
+        center;
+
+    margin-top:
+        15px;
+
+    color:
+        #d7c18b;
+
+    font-size:
+        12px;
+
+    letter-spacing:
+        2px;
+}
+
+
+/* =====================================================
+   RTL PASHTO
+===================================================== */
+
+[dir="rtl"] {
+    font-family:
+        Arial,
+        Tahoma,
+        sans-serif;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:800px) {
+
+    .layout {
+        grid-template-columns:
+            1fr;
+    }
+
+    .panel {
+        max-width:
+            500px;
+
+        width:
+            100%;
+
+        margin:
+            auto;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="game">
+
+
+<!-- =====================================================
+     PK2N STUDIO
+===================================================== -->
+
+<div class="logo">
+
+    <h1>PK2N STUDIO</h1>
+
+</div>
+
+
+<!-- =====================================================
+     LANGUAGE
+===================================================== -->
+
+<div class="language-box">
+
+    <button
+        id="languageButton"
+        class="language-button">
+
+        پښتو
+
+    </button>
+
+</div>
+
+
+<div class="layout">
+
+
+<!-- =====================================================
+     BOARD
+===================================================== -->
+
+<div class="board-frame">
+
+    <div
+        id="board"
+        class="board">
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SIDE PANEL
+===================================================== -->
+
+<div class="panel">
+
+
+    <div
+        id="turnLabel"
+        class="turn-label">
+
+        CURRENT TURN
+
+    </div>
+
+
+    <div
+        id="currentPlayer"
+        class="current-player">
+
+        ❌ PLAYER 1
+
+    </div>
+
+
+    <!-- PLAYER 1 -->
+
+    <div
+        id="player1Card"
+        class="player-card active">
+
+        <div
+            id="player1Name"
+            class="player-name">
+
+            ❌ PLAYER 1
+
+        </div>
+
+        <div
+            id="player1Description"
+            class="player-description">
+
+            X
+
+        </div>
+
+    </div>
+
+
+    <!-- PLAYER 2 -->
+
+    <div
+        id="player2Card"
+        class="player-card">
+
+        <div
+            id="player2Name"
+            class="player-name">
+
+            ⭕ PLAYER 2
+
+        </div>
+
+        <div
+            id="player2Description"
+            class="player-description">
+
+            O
+
+        </div>
+
+    </div>
+
+
+    <div class="pattern">
+
+        ◆ ◆ ◆
+
+    </div>
+
+
+    <!-- STATUS -->
+
+    <div
+        id="status"
+        class="status">
+
+        Player 1:
+        choose a square.
+
+    </div>
+
+
+    <!-- NEW GAME -->
+
+    <button
+        id="newGame"
+        class="new-game">
+
+        ↻ NEW GAME
+
+    </button>
+
+
+    <!-- INSTRUCTIONS -->
+
+    <div
+        id="instructions"
+        class="instructions">
+
+        Player 1 uses X.
+        <br>
+        Player 2 uses O.
+        <br><br>
+        Get three symbols in a row
+        to win.
+
+    </div>
+
+
+</div>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+    PK2N STUDIO
+
+</div>
+
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   TIC TAC TOE
+===================================================== */
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const board =
+    document.getElementById("board");
+
+const currentPlayerElement =
+    document.getElementById(
+        "currentPlayer"
+    );
+
+const currentTurnLabel =
+    document.getElementById(
+        "turnLabel"
+    );
+
+const player1Card =
+    document.getElementById(
+        "player1Card"
+    );
+
+const player2Card =
+    document.getElementById(
+        "player2Card"
+    );
+
+const player1Name =
+    document.getElementById(
+        "player1Name"
+    );
+
+const player2Name =
+    document.getElementById(
+        "player2Name"
+    );
+
+const player1Description =
+    document.getElementById(
+        "player1Description"
+    );
+
+const player2Description =
+    document.getElementById(
+        "player2Description"
+    );
+
+const statusElement =
+    document.getElementById(
+        "status"
+    );
+
+const newGameButton =
+    document.getElementById(
+        "newGame"
+    );
+
+const languageButton =
+    document.getElementById(
+        "languageButton"
+    );
+
+const instructions =
+    document.getElementById(
+        "instructions"
+    );
+
+
+/* =====================================================
+   GAME VARIABLES
+===================================================== */
+
+let cells =
+    [];
+
+let currentPlayer =
+    "X";
+
+let gameOver =
+    false;
+
+let language =
+    "en";
+
+
+/* =====================================================
+   TRANSLATIONS
+===================================================== */
+
+const translations = {
+
+    en: {
+
+        turn:
+            "CURRENT TURN",
+
+        player1:
+            "❌ PLAYER 1",
+
+        player2:
+            "⭕ PLAYER 2",
+
+        player1Desc:
+            "X",
+
+        player2Desc:
+            "O",
+
+        choose:
+            "Choose a square.",
+
+        player1Turn:
+            "Player 1's turn.",
+
+        player2Turn:
+            "Player 2's turn.",
+
+        player1Win:
+            "🏆 PLAYER 1 WINS!",
+
+        player2Win:
+            "🏆 PLAYER 2 WINS!",
+
+        draw:
+            "🤝 DRAW — NO WINNER",
+
+        newGame:
+            "↻ NEW GAME",
+
+        language:
+            "پښتو",
+
+        instructions:
+            "Player 1 uses X." +
+            "<br>" +
+            "Player 2 uses O." +
+            "<br><br>" +
+            "Get three symbols in a row to win."
+
+    },
+
+
+    ps: {
+
+        turn:
+            "اوسنی وار",
+
+        player1:
+            "❌ لوبغاړی ۱",
+
+        player2:
+            "⭕ لوبغاړی ۲",
+
+        player1Desc:
+            "X",
+
+        player2Desc:
+            "O",
+
+        choose:
+            "یوه خانه وټاکئ.",
+
+        player1Turn:
+            "د لوبغاړي ۱ وار دی.",
+
+        player2Turn:
+            "د لوبغاړي ۲ وار دی.",
+
+        player1Win:
+            "🏆 لوبغاړی ۱ بریالی شو!",
+
+        player2Win:
+            "🏆 لوبغاړی ۲ بریالی شو!",
+
+        draw:
+            "🤝 مساوي لوبه — ګټونکی نشته",
+
+        newGame:
+            "↻ نوې لوبه",
+
+        language:
+            "English",
+
+        instructions:
+            "لوبغاړی ۱ د X نښه کاروي." +
+            "<br>" +
+            "لوبغاړی ۲ د O نښه کاروي." +
+            "<br><br>" +
+            "د ګټلو لپاره درې نښې په یوه قطار کې جوړې کړئ."
+
+    }
+
+};
+
+
+/* =====================================================
+   WINNING COMBINATIONS
+===================================================== */
+
+const winningLines = [
+
+    [0, 1, 2],
+
+    [3, 4, 5],
+
+    [6, 7, 8],
+
+    [0, 3, 6],
+
+    [1, 4, 7],
+
+    [2, 5, 8],
+
+    [0, 4, 8],
+
+    [2, 4, 6]
+
+];
+
+
+/* =====================================================
+   CREATE BOARD
+===================================================== */
+
+function createBoard() {
+
+    board.innerHTML = "";
+
+    cells = [];
+
+
+    for (
+        let i = 0;
+        i < 9;
+        i++
+    ) {
+
+        const cell =
+            document.createElement(
+                "div"
+            );
+
+
+        cell.className =
+            "cell";
+
+
+        cell.dataset.index =
+            i;
+
+
+        cell.addEventListener(
+            "click",
+            function() {
+
+                playMove(i);
+
+            }
+        );
+
+
+        board.appendChild(
+            cell
+        );
+
+
+        cells.push(
+            cell
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   PLAY MOVE
+===================================================== */
+
+function playMove(index) {
+
+    if (
+        gameOver
+    ) {
+
+        return;
+
+    }
+
+
+    const cell =
+        cells[index];
+
+
+    if (
+        cell.dataset.mark
+    ) {
+
+        return;
+
+    }
+
+
+    cell.dataset.mark =
+        currentPlayer;
+
+
+    const mark =
+        document.createElement(
+            "div"
+        );
+
+
+    mark.className =
+        "mark " +
+        (
+            currentPlayer === "X"
+                ? "x"
+                : "o"
+        );
+
+
+    mark.textContent =
+        currentPlayer;
+
+
+    cell.appendChild(
+        mark
+    );
+
+
+    checkGame();
+
+}
+
+
+/* =====================================================
+   CHECK GAME
+===================================================== */
+
+function checkGame() {
+
+    let winningLine =
+        null;
+
+
+    for (
+        const line
+        of winningLines
+    ) {
+
+        const [
+            a,
+            b,
+            c
+        ] = line;
+
+
+        if (
+            cells[a].dataset.mark &&
+            cells[a].dataset.mark ===
+            cells[b].dataset.mark &&
+            cells[a].dataset.mark ===
+            cells[c].dataset.mark
+        ) {
+
+            winningLine =
+                line;
+
+            break;
+
+        }
+
+    }
+
+
+    /* WIN */
+
+    if (
+        winningLine
+    ) {
+
+        gameOver =
+            true;
+
+
+        winningLine.forEach(
+            index => {
+
+                cells[index]
+                    .classList.add(
+                        "winner"
+                    );
+
+            }
+        );
+
+
+        if (
+            currentPlayer === "X"
+        ) {
+
+            statusElement.textContent =
+                translations[
+                    language
+                ].player1Win;
+
+        }
+
+        else {
+
+            statusElement.textContent =
+                translations[
+                    language
+                ].player2Win;
+
+        }
+
+
+        return;
+
+    }
+
+
+    /* DRAW */
+
+    const full =
+        cells.every(
+            cell =>
+                cell.dataset.mark
+        );
+
+
+    if (
+        full
+    ) {
+
+        gameOver =
+            true;
+
+
+        statusElement.textContent =
+            translations[
+                language
+            ].draw;
+
+
+        return;
+
+    }
+
+
+    /* CHANGE PLAYER */
+
+    currentPlayer =
+        currentPlayer === "X"
+            ? "O"
+            : "X";
+
+
+    updateTurn();
+
+}
+
+
+/* =====================================================
+   UPDATE TURN
+===================================================== */
+
+function updateTurn() {
+
+    const t =
+        translations[
+            language
+        ];
+
+
+    currentTurnLabel.textContent =
+        t.turn;
+
+
+    if (
+        currentPlayer === "X"
+    ) {
+
+        currentPlayerElement.textContent =
+            t.player1;
+
+        player1Card.classList.add(
+            "active"
+        );
+
+        player2Card.classList.remove(
+            "active"
+        );
+
+        statusElement.textContent =
+            t.player1Turn;
+
+    }
+
+    else {
+
+        currentPlayerElement.textContent =
+            t.player2;
+
+        player2Card.classList.add(
+            "active"
+        );
+
+        player1Card.classList.remove(
+            "active"
+        );
+
+        statusElement.textContent =
+            t.player2Turn;
+
+    }
+
+}
+
+
+/* =====================================================
+   UPDATE LANGUAGE
+===================================================== */
+
+function updateLanguage() {
+
+    const t =
+        translations[
+            language
+        ];
+
+
+    document.documentElement.lang =
+        language === "ps"
+            ? "ps"
+            : "en";
+
+
+    document.documentElement.dir =
+        language === "ps"
+            ? "rtl"
+            : "ltr";
+
+
+    currentTurnLabel.textContent =
+        t.turn;
+
+
+    player1Name.textContent =
+        t.player1;
+
+
+    player2Name.textContent =
+        t.player2;
+
+
+    player1Description.textContent =
+        t.player1Desc;
+
+
+    player2Description.textContent =
+        t.player2Desc;
+
+
+    newGameButton.textContent =
+        t.newGame;
+
+
+    languageButton.textContent =
+        t.language;
+
+
+    instructions.innerHTML =
+        t.instructions;
+
+
+    if (
+        !gameOver
+    ) {
+
+        updateTurn();
+
+    }
+
+}
+
+
+/* =====================================================
+   NEW GAME
+===================================================== */
+
+function newGame() {
+
+    currentPlayer =
+        "X";
+
+    gameOver =
+        false;
+
+
+    createBoard();
+
+    updateLanguage();
+
+    updateTurn();
+
+}
+
+
+/* =====================================================
+   LANGUAGE TOGGLE
+===================================================== */
+
+languageButton.addEventListener(
+    "click",
+    function() {
+
+        language =
+            language === "en"
+                ? "ps"
+                : "en";
+
+
+        updateLanguage();
+
+    }
+);
+
+
+/* =====================================================
+   NEW GAME BUTTON
+===================================================== */
+
+newGameButton.addEventListener(
+    "click",
+    function() {
+
+        newGame();
+
+    }
+);
+
+
+/* =====================================================
+   START GAME
+===================================================== */
+
+newGame();
+
+</script>
+
+</body>
+</html>
