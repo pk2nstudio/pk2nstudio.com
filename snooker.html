@@ -1,0 +1,2136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PK2N Studio - Snooker</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            rgba(15,35,30,.72),
+            rgba(15,35,30,.82)
+        ),
+        linear-gradient(
+            135deg,
+            #304b3d,
+            #172d2b 50%,
+            #3d2d20
+        );
+
+    display: flex;
+    justify-content: center;
+}
+
+.game {
+    width: 100%;
+    max-width: 1150px;
+}
+
+
+/* =====================================================
+   PK2N STUDIO HEADER
+===================================================== */
+
+.logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo h1 {
+    margin: 0;
+
+    font-size: clamp(34px, 5vw, 58px);
+
+    letter-spacing: 6px;
+
+    color: #e5b94c;
+
+    text-shadow:
+        0 3px #4a2d13,
+        0 6px 12px #000;
+}
+
+
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
+
+.layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(500px,850px)
+        230px;
+
+    gap: 18px;
+
+    align-items: start;
+}
+
+
+/* =====================================================
+   TABLE FRAME
+===================================================== */
+
+.table-frame {
+
+    padding: 14px;
+
+    border-radius: 22px;
+
+    background:
+        repeating-linear-gradient(
+            45deg,
+            #5b3518 0px,
+            #5b3518 8px,
+            #8b5b29 8px,
+            #8b5b29 12px
+        );
+
+    border: 4px solid #c79a42;
+
+    box-shadow:
+        0 20px 45px #000b;
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table {
+
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 2 / 1;
+
+    background: #087044;
+
+    border: 18px solid #4b2b15;
+
+    border-radius: 12px;
+
+    box-shadow:
+        inset 0 0 0 5px #bd9140;
+
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   POCKETS
+===================================================== */
+
+.pocket {
+
+    position: absolute;
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    background: #100c08;
+
+    box-shadow:
+        inset 0 2px 5px #000,
+        0 1px 2px #000;
+
+    transform:
+        translate(-50%, -50%);
+
+    z-index: 5;
+}
+
+
+/* =====================================================
+   BALLS
+===================================================== */
+
+.ball {
+
+    position: absolute;
+
+    width: 18px;
+    height: 18px;
+
+    border-radius: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    box-shadow:
+        1px 2px 4px #0008,
+        inset 2px 2px 3px #fff8;
+
+    z-index: 10;
+}
+
+
+/* WHITE */
+
+.white {
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #fff,
+            #d5d5d5
+        );
+}
+
+
+/* RED */
+
+.red {
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #ed5b50,
+            #921b18
+        );
+}
+
+
+/* YELLOW */
+
+.yellow {
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #ffe66b,
+            #b17c08
+        );
+}
+
+
+/* GREEN */
+
+.green {
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #61bd76,
+            #176d34
+        );
+}
+
+
+/* BROWN */
+
+.brown {
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #a96c3e,
+            #603719
+        );
+}
+
+
+/* BLUE */
+
+.blue {
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #6ea6d4,
+            #245b8b
+        );
+}
+
+
+/* PINK */
+
+.pink {
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #ffc0cf,
+            #d56d88
+        );
+}
+
+
+/* BLACK */
+
+.black {
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #555,
+            #080808
+        );
+}
+
+
+/* =====================================================
+   CUE
+===================================================== */
+
+.cue {
+
+    position: absolute;
+
+    height: 5px;
+
+    background:
+        linear-gradient(
+            #d7b070,
+            #6b3c19
+        );
+
+    transform-origin:
+        left center;
+
+    z-index: 20;
+
+    border-radius: 3px;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   CONTROL PANEL
+===================================================== */
+
+.panel {
+
+    border:
+        3px solid #8d682b;
+
+    border-radius: 15px;
+
+    padding: 17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #3e2817,
+            #21150e
+        );
+
+    box-shadow:
+        0 10px 25px #0009,
+        inset 0 0 0 2px #5e3d20;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   CURRENT PLAYER
+===================================================== */
+
+.current-label {
+
+    color: #d8b85a;
+
+    letter-spacing: 2px;
+
+    font-size: 12px;
+
+    margin-bottom: 5px;
+}
+
+
+.current-player {
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+    margin-bottom: 12px;
+
+    color: #f0d274;
+}
+
+
+/* =====================================================
+   PLAYER SCORES
+===================================================== */
+
+.scores {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 8px;
+
+    margin-bottom: 15px;
+}
+
+
+.player-score {
+
+    padding: 10px 5px;
+
+    border:
+        2px solid #735329;
+
+    border-radius: 8px;
+
+    background:
+        rgba(0,0,0,.25);
+}
+
+
+.player-score.active {
+
+    border-color:
+        #e0b957;
+
+    box-shadow:
+        0 0 8px #d8a93466;
+}
+
+
+.player-name {
+
+    font-size: 12px;
+
+    color: #d9c18b;
+
+    margin-bottom: 3px;
+}
+
+
+.player-points {
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    color: #fff;
+}
+
+
+/* =====================================================
+   DECORATION
+===================================================== */
+
+.pattern {
+
+    color: #b98a39;
+
+    letter-spacing: 5px;
+
+    margin: 14px 0;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status {
+
+    min-height: 90px;
+
+    color: #e9d9ac;
+
+    line-height: 1.45;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   BUTTON
+===================================================== */
+
+button {
+
+    width: 100%;
+
+    padding: 13px;
+
+    margin-top: 10px;
+
+    border-radius: 9px;
+
+    border:
+        2px solid #e0b957;
+
+    background:
+        linear-gradient(
+            #b6402f,
+            #79231b
+        );
+
+    color: white;
+
+    font-family: Georgia, serif;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+button:hover {
+
+    filter: brightness(1.15);
+
+}
+
+
+/* =====================================================
+   HINT
+===================================================== */
+
+.hint {
+
+    margin-top: 14px;
+
+    font-size: 12px;
+
+    color: #cdbb91;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer {
+
+    text-align: center;
+
+    margin-top: 15px;
+
+    color: #d7c18b;
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:800px) {
+
+    .layout {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .panel {
+
+        max-width: 500px;
+
+        margin: auto;
+
+    }
+
+    .table {
+
+        border-width: 12px;
+
+    }
+
+    .ball {
+
+        width: 14px;
+        height: 14px;
+
+    }
+
+    .pocket {
+
+        width: 25px;
+        height: 25px;
+
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div class="game">
+
+
+<!-- =====================================================
+     PK2N STUDIO
+===================================================== -->
+
+<div class="logo">
+
+    <h1>
+        PK2N STUDIO
+    </h1>
+
+</div>
+
+
+<div class="layout">
+
+
+<!-- =====================================================
+     SNOOKER TABLE
+===================================================== -->
+
+<div class="table-frame">
+
+    <div
+        id="table"
+        class="table">
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     GAME PANEL
+===================================================== -->
+
+<div class="panel">
+
+
+    <div class="current-label">
+
+        CURRENT TURN
+
+    </div>
+
+
+    <div
+        id="currentPlayer"
+        class="current-player">
+
+        🔴 PLAYER 1
+
+    </div>
+
+
+    <!-- PLAYER SCORES -->
+
+    <div class="scores">
+
+
+        <div
+            id="player1Box"
+            class="player-score active">
+
+            <div class="player-name">
+
+                🔴 PLAYER 1
+
+            </div>
+
+            <div
+                id="player1Score"
+                class="player-points">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="player2Box"
+            class="player-score">
+
+            <div class="player-name">
+
+                🔵 PLAYER 2
+
+            </div>
+
+            <div
+                id="player2Score"
+                class="player-points">
+
+                0
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="pattern">
+
+        ◆ ◆ ◆
+
+    </div>
+
+
+    <div
+        id="status"
+        class="status">
+
+        Player 1:
+        click and drag from the
+        white ball away from the
+        direction you want to shoot.
+
+    </div>
+
+
+    <button id="reset">
+
+        ↻ NEW GAME
+
+    </button>
+
+
+    <div class="hint">
+
+        Longer drag =
+        stronger shot.
+
+        <br><br>
+
+        Pot a ball to keep your turn.
+
+        <br>
+
+        Miss =
+        next player's turn.
+
+    </div>
+
+
+</div>
+
+</div>
+
+
+<div class="footer">
+
+    PK2N STUDIO
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+/* =====================================================
+   GAME SETUP
+===================================================== */
+
+const table =
+    document.getElementById("table");
+
+const currentPlayerElement =
+    document.getElementById(
+        "currentPlayer"
+    );
+
+const player1ScoreElement =
+    document.getElementById(
+        "player1Score"
+    );
+
+const player2ScoreElement =
+    document.getElementById(
+        "player2Score"
+    );
+
+const player1Box =
+    document.getElementById(
+        "player1Box"
+    );
+
+const player2Box =
+    document.getElementById(
+        "player2Box"
+    );
+
+const statusElement =
+    document.getElementById(
+        "status"
+    );
+
+const resetButton =
+    document.getElementById(
+        "reset"
+    );
+
+
+/* =====================================================
+   TABLE SETTINGS
+===================================================== */
+
+const WIDTH = 1000;
+
+const HEIGHT = 500;
+
+const BALL_RADIUS = 10;
+
+const POCKET_RADIUS = 22;
+
+
+/* =====================================================
+   GAME VARIABLES
+===================================================== */
+
+let balls = [];
+
+let player1Score = 0;
+
+let player2Score = 0;
+
+let currentPlayer = 1;
+
+let aiming = false;
+
+let aimStart = null;
+
+let cueStick = null;
+
+let gameOver = false;
+
+let ballPottedThisShot = false;
+
+
+/* =====================================================
+   POCKETS
+===================================================== */
+
+const pockets = [
+
+    [0, 0],
+
+    [WIDTH / 2, 0],
+
+    [WIDTH, 0],
+
+    [0, HEIGHT],
+
+    [WIDTH / 2, HEIGHT],
+
+    [WIDTH, HEIGHT]
+
+];
+
+
+/* =====================================================
+   CREATE BALL
+===================================================== */
+
+function createBall(
+    id,
+    x,
+    y,
+    type,
+    value = 0
+) {
+
+    return {
+
+        id: id,
+
+        x: x,
+
+        y: y,
+
+        vx: 0,
+
+        vy: 0,
+
+        type: type,
+
+        value: value,
+
+        potted: false
+
+    };
+
+}
+
+
+/* =====================================================
+   NEW GAME
+===================================================== */
+
+function resetGame() {
+
+    balls = [];
+
+    player1Score = 0;
+
+    player2Score = 0;
+
+    currentPlayer = 1;
+
+    gameOver = false;
+
+    ballPottedThisShot = false;
+
+
+    updateScores();
+
+    updateTurn();
+
+
+    /*
+       WHITE BALL
+    */
+
+    balls.push(
+
+        createBall(
+            "cue",
+            WIDTH * .25,
+            HEIGHT * .5,
+            "white"
+        )
+
+    );
+
+
+    /*
+       15 RED BALLS
+    */
+
+    const startX =
+        WIDTH * .68;
+
+    const startY =
+        HEIGHT * .5;
+
+    const gap = 21;
+
+    let redNumber = 0;
+
+
+    for(
+        let row = 0;
+        row < 5;
+        row++
+    ) {
+
+        for(
+            let column = 0;
+            column <= row;
+            column++
+        ) {
+
+            balls.push(
+
+                createBall(
+
+                    "red" +
+                    redNumber,
+
+                    startX +
+                    row *
+                    gap *
+                    .87,
+
+                    startY +
+                    (
+                        column -
+                        row / 2
+                    ) *
+                    gap,
+
+                    "red",
+
+                    1
+
+                )
+
+            );
+
+            redNumber++;
+
+        }
+
+    }
+
+
+    /*
+       COLOURED BALLS
+    */
+
+    balls.push(
+        createBall(
+            "yellow",
+            WIDTH * .25,
+            HEIGHT * .78,
+            "yellow",
+            2
+        )
+    );
+
+    balls.push(
+        createBall(
+            "green",
+            WIDTH * .25,
+            HEIGHT * .22,
+            "green",
+            3
+        )
+    );
+
+    balls.push(
+        createBall(
+            "brown",
+            WIDTH * .25,
+            HEIGHT * .5,
+            "brown",
+            4
+        )
+    );
+
+    balls.push(
+        createBall(
+            "blue",
+            WIDTH * .5,
+            HEIGHT * .5,
+            "blue",
+            5
+        )
+    );
+
+    balls.push(
+        createBall(
+            "pink",
+            WIDTH * .62,
+            HEIGHT * .5,
+            "pink",
+            6
+        )
+    );
+
+    balls.push(
+        createBall(
+            "black",
+            WIDTH * .84,
+            HEIGHT * .5,
+            "black",
+            7
+        )
+    );
+
+
+    statusElement.textContent =
+        "Player 1: click and drag from the white ball to aim your shot.";
+
+
+    render();
+
+}
+
+
+/* =====================================================
+   UPDATE SCORE
+===================================================== */
+
+function updateScores() {
+
+    player1ScoreElement.textContent =
+        player1Score;
+
+    player2ScoreElement.textContent =
+        player2Score;
+
+}
+
+
+/* =====================================================
+   UPDATE CURRENT PLAYER
+===================================================== */
+
+function updateTurn() {
+
+    if(
+        currentPlayer === 1
+    ) {
+
+        currentPlayerElement.textContent =
+            "🔴 PLAYER 1";
+
+        player1Box.classList.add(
+            "active"
+        );
+
+        player2Box.classList.remove(
+            "active"
+        );
+
+    }
+
+    else {
+
+        currentPlayerElement.textContent =
+            "🔵 PLAYER 2";
+
+        player2Box.classList.add(
+            "active"
+        );
+
+        player1Box.classList.remove(
+            "active"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   DRAW TABLE
+===================================================== */
+
+function render() {
+
+    table.innerHTML = "";
+
+
+    pockets.forEach(
+        pocket => {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+            element.className =
+                "pocket";
+
+            element.style.left =
+                (
+                    pocket[0] /
+                    WIDTH *
+                    100
+                ) + "%";
+
+            element.style.top =
+                (
+                    pocket[1] /
+                    HEIGHT *
+                    100
+                ) + "%";
+
+            table.appendChild(
+                element
+            );
+
+        }
+    );
+
+
+    balls
+        .filter(
+            ball =>
+                !ball.potted
+        )
+        .forEach(
+            ball => {
+
+                const element =
+                    document.createElement(
+                        "div"
+                    );
+
+                element.className =
+                    "ball " +
+                    ball.type;
+
+                element.style.left =
+                    (
+                        ball.x /
+                        WIDTH *
+                        100
+                    ) + "%";
+
+                element.style.top =
+                    (
+                        ball.y /
+                        HEIGHT *
+                        100
+                    ) + "%";
+
+                table.appendChild(
+                    element
+                );
+
+            }
+        );
+
+
+    if(cueStick) {
+
+        table.appendChild(
+            cueStick
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   MOUSE POSITION
+===================================================== */
+
+function getMousePosition(event) {
+
+    const rectangle =
+        table.getBoundingClientRect();
+
+
+    return {
+
+        x:
+            (
+                event.clientX -
+                rectangle.left
+            )
+            /
+            rectangle.width
+            *
+            WIDTH,
+
+        y:
+            (
+                event.clientY -
+                rectangle.top
+            )
+            /
+            rectangle.height
+            *
+            HEIGHT
+
+    };
+
+}
+
+
+/* =====================================================
+   CHECK MOVEMENT
+===================================================== */
+
+function tableMoving() {
+
+    return balls.some(
+
+        ball =>
+
+            !ball.potted &&
+
+            (
+                Math.abs(ball.vx) +
+                Math.abs(ball.vy)
+            ) > .03
+
+    );
+
+}
+
+
+/* =====================================================
+   START AIMING
+===================================================== */
+
+function startAim(event) {
+
+    if(
+        gameOver ||
+        tableMoving()
+    ) {
+
+        return;
+
+    }
+
+
+    const whiteBall =
+        balls.find(
+
+            ball =>
+                ball.id === "cue" &&
+                !ball.potted
+
+        );
+
+
+    if(!whiteBall) {
+
+        return;
+
+    }
+
+
+    const position =
+        getMousePosition(
+            event
+        );
+
+
+    const distance =
+        Math.hypot(
+
+            position.x -
+            whiteBall.x,
+
+            position.y -
+            whiteBall.y
+
+        );
+
+
+    if(
+        distance > 15
+    ) {
+
+        aiming = true;
+
+        aimStart =
+            position;
+
+
+        cueStick =
+            document.createElement(
+                "div"
+            );
+
+        cueStick.className =
+            "cue";
+
+
+        table.appendChild(
+            cueStick
+        );
+
+
+        updateCue(
+            position
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   AIM
+===================================================== */
+
+function updateAim(event) {
+
+    if(!aiming) {
+
+        return;
+
+    }
+
+
+    updateCue(
+        getMousePosition(
+            event
+        )
+    );
+
+}
+
+
+/* =====================================================
+   CUE STICK
+===================================================== */
+
+function updateCue(position) {
+
+    const whiteBall =
+        balls.find(
+            ball =>
+                ball.id === "cue"
+        );
+
+
+    const dx =
+        aimStart.x -
+        whiteBall.x;
+
+
+    const dy =
+        aimStart.y -
+        whiteBall.y;
+
+
+    const length =
+        Math.hypot(
+            dx,
+            dy
+        );
+
+
+    const angle =
+        Math.atan2(
+            dy,
+            dx
+        );
+
+
+    const power =
+        Math.min(
+            260,
+            Math.max(
+                45,
+                length
+            )
+        );
+
+
+    cueStick.style.left =
+        (
+            whiteBall.x /
+            WIDTH *
+            100
+        ) + "%";
+
+
+    cueStick.style.top =
+        (
+            whiteBall.y /
+            HEIGHT *
+            100
+        ) + "%";
+
+
+    cueStick.style.width =
+        power + "px";
+
+
+    cueStick.style.transform =
+        `rotate(${angle}rad)`;
+
+}
+
+
+/* =====================================================
+   SHOOT
+===================================================== */
+
+function endAim(event) {
+
+    if(!aiming) {
+
+        return;
+
+    }
+
+
+    aiming = false;
+
+
+    if(cueStick) {
+
+        cueStick.remove();
+
+        cueStick = null;
+
+    }
+
+
+    const whiteBall =
+        balls.find(
+            ball =>
+                ball.id === "cue"
+        );
+
+
+    const position =
+        getMousePosition(
+            event
+        );
+
+
+    let dx =
+        whiteBall.x -
+        position.x;
+
+
+    let dy =
+        whiteBall.y -
+        position.y;
+
+
+    const distance =
+        Math.hypot(
+            dx,
+            dy
+        );
+
+
+    if(
+        distance < 15
+    ) {
+
+        statusElement.textContent =
+            "Pull farther back to add power.";
+
+        return;
+
+    }
+
+
+    const power =
+        Math.min(
+            14,
+            distance * .055
+        );
+
+
+    whiteBall.vx =
+        dx /
+        distance *
+        power;
+
+
+    whiteBall.vy =
+        dy /
+        distance *
+        power;
+
+
+    ballPottedThisShot =
+        false;
+
+
+    statusElement.textContent =
+        "Player " +
+        currentPlayer +
+        " is taking the shot...";
+
+
+    animate();
+
+}
+
+
+/* =====================================================
+   GAME PHYSICS
+===================================================== */
+
+function animate() {
+
+    let moving = false;
+
+
+    balls.forEach(
+        ball => {
+
+            if(
+                ball.potted
+            ) {
+
+                return;
+
+            }
+
+
+            ball.x +=
+                ball.vx;
+
+            ball.y +=
+                ball.vy;
+
+
+            ball.vx *=
+                .985;
+
+            ball.vy *=
+                .985;
+
+
+            if(
+                Math.abs(ball.vx) +
+                Math.abs(ball.vy)
+                > .03
+            ) {
+
+                moving = true;
+
+            }
+
+
+            if(
+                ball.x <
+                BALL_RADIUS
+            ) {
+
+                ball.x =
+                    BALL_RADIUS;
+
+                ball.vx =
+                    Math.abs(
+                        ball.vx
+                    ) * .88;
+
+            }
+
+
+            if(
+                ball.x >
+                WIDTH -
+                BALL_RADIUS
+            ) {
+
+                ball.x =
+                    WIDTH -
+                    BALL_RADIUS;
+
+                ball.vx =
+                    -Math.abs(
+                        ball.vx
+                    ) * .88;
+
+            }
+
+
+            if(
+                ball.y <
+                BALL_RADIUS
+            ) {
+
+                ball.y =
+                    BALL_RADIUS;
+
+                ball.vy =
+                    Math.abs(
+                        ball.vy
+                    ) * .88;
+
+            }
+
+
+            if(
+                ball.y >
+                HEIGHT -
+                BALL_RADIUS
+            ) {
+
+                ball.y =
+                    HEIGHT -
+                    BALL_RADIUS;
+
+                ball.vy =
+                    -Math.abs(
+                        ball.vy
+                    ) * .88;
+
+            }
+
+        }
+    );
+
+
+    handleCollisions();
+
+    handlePockets();
+
+    render();
+
+
+    if(moving) {
+
+        requestAnimationFrame(
+            animate
+        );
+
+    }
+
+    else {
+
+        balls.forEach(
+            ball => {
+
+                if(
+                    !ball.potted
+                ) {
+
+                    ball.vx = 0;
+
+                    ball.vy = 0;
+
+                }
+
+            }
+        );
+
+
+        finishTurn();
+
+    }
+
+}
+
+
+/* =====================================================
+   BALL COLLISIONS
+===================================================== */
+
+function handleCollisions() {
+
+    const liveBalls =
+        balls.filter(
+            ball =>
+                !ball.potted
+        );
+
+
+    for(
+        let i = 0;
+        i < liveBalls.length;
+        i++
+    ) {
+
+        for(
+            let j = i + 1;
+            j < liveBalls.length;
+            j++
+        ) {
+
+            const a =
+                liveBalls[i];
+
+            const b =
+                liveBalls[j];
+
+
+            const dx =
+                b.x -
+                a.x;
+
+            const dy =
+                b.y -
+                a.y;
+
+
+            const distance =
+                Math.hypot(
+                    dx,
+                    dy
+                );
+
+
+            const minimumDistance =
+                BALL_RADIUS * 2;
+
+
+            if(
+
+                distance > 0 &&
+
+                distance <
+                minimumDistance
+
+            ) {
+
+                const nx =
+                    dx /
+                    distance;
+
+                const ny =
+                    dy /
+                    distance;
+
+
+                const overlap =
+                    minimumDistance -
+                    distance;
+
+
+                a.x -=
+                    nx *
+                    overlap /
+                    2;
+
+                a.y -=
+                    ny *
+                    overlap /
+                    2;
+
+
+                b.x +=
+                    nx *
+                    overlap /
+                    2;
+
+                b.y +=
+                    ny *
+                    overlap /
+                    2;
+
+
+                const relativeVelocity =
+
+                    (
+                        a.vx -
+                        b.vx
+                    ) * nx +
+
+                    (
+                        a.vy -
+                        b.vy
+                    ) * ny;
+
+
+                if(
+                    relativeVelocity > 0
+                ) {
+
+                    a.vx -=
+                        relativeVelocity *
+                        nx;
+
+                    a.vy -=
+                        relativeVelocity *
+                        ny;
+
+                    b.vx +=
+                        relativeVelocity *
+                        nx;
+
+                    b.vy +=
+                        relativeVelocity *
+                        ny;
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   POCKET BALLS
+===================================================== */
+
+function handlePockets() {
+
+    balls.forEach(
+        ball => {
+
+            if(
+                ball.potted
+            ) {
+
+                return;
+
+            }
+
+
+            for(
+                const pocket of pockets
+            ) {
+
+                const distance =
+                    Math.hypot(
+
+                        ball.x -
+                        pocket[0],
+
+                        ball.y -
+                        pocket[1]
+
+                    );
+
+
+                if(
+                    distance <
+                    POCKET_RADIUS
+                ) {
+
+
+                    /*
+                       WHITE BALL
+                    */
+
+                    if(
+                        ball.type ===
+                        "white"
+                    ) {
+
+                        ball.x =
+                            WIDTH * .25;
+
+                        ball.y =
+                            HEIGHT * .5;
+
+                        ball.vx = 0;
+
+                        ball.vy = 0;
+
+
+                        statusElement.textContent =
+                            "White ball potted. It has been returned.";
+
+                    }
+
+
+                    /*
+                       OTHER BALLS
+                    */
+
+                    else {
+
+                        ball.potted =
+                            true;
+
+                        ball.vx = 0;
+
+                        ball.vy = 0;
+
+
+                        ballPottedThisShot =
+                            true;
+
+
+                        if(
+                            currentPlayer === 1
+                        ) {
+
+                            player1Score +=
+                                ball.value;
+
+                        }
+
+                        else {
+
+                            player2Score +=
+                                ball.value;
+
+                        }
+
+
+                        updateScores();
+
+
+                        statusElement.textContent =
+
+                            "🎱 Player " +
+                            currentPlayer +
+                            " potted " +
+                            ball.type +
+                            " +" +
+                            ball.value +
+                            " points!";
+
+                    }
+
+
+                    break;
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   FINISH TURN
+===================================================== */
+
+function finishTurn() {
+
+    const redsRemaining =
+        balls.filter(
+
+            ball =>
+                ball.type === "red" &&
+                !ball.potted
+
+        ).length;
+
+
+    /*
+       GAME FINISHED
+    */
+
+    if(
+        redsRemaining === 0
+    ) {
+
+        gameOver = true;
+
+
+        if(
+            player1Score >
+            player2Score
+        ) {
+
+            statusElement.textContent =
+
+                "🏆 PLAYER 1 WINS! " +
+                player1Score +
+                " - " +
+                player2Score;
+
+        }
+
+        else if(
+            player2Score >
+            player1Score
+        ) {
+
+            statusElement.textContent =
+
+                "🏆 PLAYER 2 WINS! " +
+                player2Score +
+                " - " +
+                player1Score;
+
+        }
+
+        else {
+
+            statusElement.textContent =
+
+                "🤝 DRAW! Both players scored " +
+                player1Score +
+                " points.";
+
+        }
+
+
+        return;
+
+    }
+
+
+    /*
+       PLAYER SCORED
+    */
+
+    if(
+        ballPottedThisShot
+    ) {
+
+        statusElement.textContent =
+
+            "🎱 Player " +
+            currentPlayer +
+            " scored! Shoot again.";
+
+    }
+
+
+    /*
+       PLAYER MISSED
+    */
+
+    else {
+
+        if(
+            currentPlayer === 1
+        ) {
+
+            currentPlayer = 2;
+
+        }
+
+        else {
+
+            currentPlayer = 1;
+
+        }
+
+
+        updateTurn();
+
+
+        statusElement.textContent =
+
+            "Player " +
+            currentPlayer +
+            "'s turn.";
+
+    }
+
+
+    ballPottedThisShot =
+        false;
+
+}
+
+
+/* =====================================================
+   CONTROLS
+===================================================== */
+
+table.addEventListener(
+    "pointerdown",
+    startAim
+);
+
+table.addEventListener(
+    "pointermove",
+    updateAim
+);
+
+table.addEventListener(
+    "pointerup",
+    endAim
+);
+
+
+resetButton.addEventListener(
+    "click",
+    resetGame
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+resetGame();
+
+</script>
+
+</body>
+</html>
