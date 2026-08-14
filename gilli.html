@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PK2N Studio - Gilli Danda</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 15px;
+    background: linear-gradient(#477b7b, #76502d);
+    color: white;
+    font-family: Georgia, serif;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+    color: #e7c75c;
+    letter-spacing: 4px;
+    margin: 5px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #ddd09c;
+    margin-bottom: 10px;
+}
+
+.language {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 22px;
+    border: 2px solid #b8903d;
+    border-radius: 8px;
+    background: #302116;
+    color: #f0d36c;
+    font-family: Georgia, serif;
+    cursor: pointer;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    background: #291b12;
+    border: 2px solid #96702f;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.label {
+    font-size: 11px;
+    color: #cdbd91;
+}
+
+.number {
+    font-size: 23px;
+    color: #f0d36c;
+    font-weight: bold;
+}
+
+#game {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    border: 5px solid #382419;
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            #729999 0%,
+            #96aa79 48%,
+            #76522f 49%,
+            #684627 100%
+        );
+}
+
+/* Mountains */
+
+.mountain {
+    position: absolute;
+    bottom: 135px;
+    width: 0;
+    height: 0;
+
+    border-left: 190px solid transparent;
+    border-right: 190px solid transparent;
+    border-bottom: 230px solid #53665f;
+}
+
+.m1 {
+    left: -100px;
+}
+
+.m2 {
+    left: 30%;
+    transform: scale(1.25);
+}
+
+.m3 {
+    right: -120px;
+    transform: scale(.9);
+}
+
+/* Ground */
+
+.ground {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 140px;
+
+    background:
+        repeating-linear-gradient(
+            25deg,
+            #684a2b 0px,
+            #684a2b 14px,
+            #795633 14px,
+            #795633 23px
+        );
+}
+
+/* Player */
+
+#player {
+    position: absolute;
+    left: 55px;
+    bottom: 55px;
+    font-size: 65px;
+    z-index: 10;
+}
+
+/* Danda */
+
+#danda {
+    position: absolute;
+    left: 115px;
+    bottom: 115px;
+
+    width: 110px;
+    height: 12px;
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            #70431f,
+            #c28a48,
+            #70431f
+        );
+
+    transform: rotate(-25deg);
+
+    z-index: 11;
+}
+
+/* Gilli */
+
+#gilli {
+    position: absolute;
+
+    left: 225px;
+    bottom: 140px;
+
+    width: 14px;
+    height: 55px;
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #613918,
+            #c18442,
+            #613918
+        );
+
+    transform: rotate(65deg);
+
+    z-index: 12;
+}
+
+/* Message */
+
+#message {
+    position: absolute;
+
+    top: 15px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    background: #0009;
+
+    padding: 9px 18px;
+
+    border-radius: 20px;
+
+    color: #f0d36c;
+
+    z-index: 20;
+
+    white-space: nowrap;
+}
+
+/* Timing */
+
+#timingBox {
+    position: absolute;
+
+    bottom: 20px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 320px;
+
+    padding: 10px;
+
+    background: #24180f;
+
+    border: 2px solid #96702f;
+
+    border-radius: 10px;
+
+    z-index: 20;
+}
+
+#timingTitle {
+    text-align: center;
+    font-size: 12px;
+    color: #dfc66b;
+    margin-bottom: 6px;
+}
+
+#timingBar {
+    position: relative;
+
+    width: 100%;
+    height: 22px;
+
+    background: #40352c;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+#sweetSpot {
+    position: absolute;
+
+    left: 40%;
+    width: 20%;
+    height: 100%;
+
+    background: #c7a23b;
+}
+
+#pointer {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 5px;
+    height: 100%;
+
+    background: white;
+}
+
+/* Hit button */
+
+#hit {
+    display: block;
+
+    margin: 12px auto;
+
+    padding: 13px 45px;
+
+    font-size: 20px;
+
+    background: #773020;
+
+    color: white;
+}
+
+#start {
+    display: block;
+
+    margin: 10px auto;
+
+    background: #302116;
+}
+
+/* Instructions */
+
+.instructions {
+    text-align: center;
+
+    margin-top: 10px;
+
+    padding: 12px;
+
+    background: #291b12;
+
+    border: 2px solid #8d692e;
+
+    border-radius: 10px;
+
+    color: #d9c99c;
+
+    line-height: 1.5;
+}
+
+/* Branding */
+
+.branding {
+    text-align: center;
+
+    margin-top: 15px;
+
+    padding-top: 12px;
+
+    border-top: 1px solid #a98a45;
+
+    color: #e7c75c;
+
+    font-size: 19px;
+
+    font-weight: bold;
+
+    letter-spacing: 5px;
+}
+
+.branding small {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: #cbbd92;
+}
+
+@media(max-width:600px) {
+
+    #game {
+        height: 430px;
+    }
+
+    #player {
+        left: 20px;
+        font-size: 50px;
+    }
+
+    #danda {
+        left: 75px;
+        bottom: 100px;
+        width: 90px;
+    }
+
+    #timingBox {
+        width: 240px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>PK2N STUDIO</h1>
+
+<div class="subtitle" id="title">
+GILLI DANDA • PASHTUN GAME
+</div>
+
+<div class="language">
+<button id="language">پښتو</button>
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+<div class="label" id="scoreLabel">SCORE</div>
+<div class="number" id="score">0</div>
+</div>
+
+<div class="stat">
+<div class="label" id="roundLabel">ROUND</div>
+<div class="number" id="round">1 / 5</div>
+</div>
+
+<div class="stat">
+<div class="label" id="bestLabel">BEST HIT</div>
+<div class="number" id="best">0m</div>
+</div>
+
+</div>
+
+
+<div id="game">
+
+<div class="mountain m1"></div>
+<div class="mountain m2"></div>
+<div class="mountain m3"></div>
+
+<div class="ground"></div>
+
+<div id="message">
+Press START GAME
+</div>
+
+<div id="player">
+🧔🏽
+</div>
+
+<div id="danda"></div>
+
+<div id="gilli"></div>
+
+
+<div id="timingBox">
+
+<div id="timingTitle">
+TIMING
+</div>
+
+<div id="timingBar">
+
+<div id="sweetSpot"></div>
+
+<div id="pointer"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<button id="hit">
+HIT!
+</button>
+
+<button id="start">
+START GAME
+</button>
+
+
+<div class="instructions" id="instructions">
+
+<b>HOW TO PLAY</b><br>
+Press START GAME.<br>
+Watch the white marker move across the bar.<br>
+Press HIT when it is near the middle gold area.<br>
+The closer to the centre, the further the gilli travels.
+
+</div>
+
+
+<div class="branding">
+
+PK2N STUDIO
+
+<small>
+GILLI DANDA • PASHTUN GAMES
+</small>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   GAME VARIABLES
+========================= */
+
+let score = 0;
+let round = 1;
+let best = 0;
+
+let playing = false;
+
+let position = 0;
+let direction = 1;
+
+let timer = null;
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const scoreDisplay =
+document.getElementById("score");
+
+const roundDisplay =
+document.getElementById("round");
+
+const bestDisplay =
+document.getElementById("best");
+
+const pointer =
+document.getElementById("pointer");
+
+const message =
+document.getElementById("message");
+
+const hitButton =
+document.getElementById("hit");
+
+const startButton =
+document.getElementById("start");
+
+const gilli =
+document.getElementById("gilli");
+
+
+/* =========================
+   LANGUAGE
+========================= */
+
+let lang = "en";
+
+const words = {
+
+en: {
+
+button: "پښتو",
+
+title: "GILLI DANDA • PASHTUN GAME",
+
+score: "SCORE",
+
+round: "ROUND",
+
+best: "BEST HIT",
+
+timing: "TIMING",
+
+hit: "HIT!",
+
+start: "START GAME",
+
+ready: "Press HIT at the right time!",
+
+perfect: "PERFECT HIT! +100",
+
+great: "GREAT HIT! +75",
+
+good: "GOOD HIT! +50",
+
+poor: "POOR HIT! +20",
+
+miss: "MISS! +5",
+
+gameover: "GAME OVER! SCORE: ",
+
+instructions:
+"<b>HOW TO PLAY</b><br>" +
+"Press START GAME.<br>" +
+"Watch the white marker move across the bar.<br>" +
+"Press HIT when it is near the middle gold area.<br>" +
+"The closer to the centre, the further the gilli travels."
+
+},
+
+ps: {
+
+button: "English",
+
+title: "ګلي ډنډه • پښتني لوبه",
+
+score: "نمرې",
+
+round: "پړاو",
+
+best: "غوره ویشتل",
+
+timing: "وخت",
+
+hit: "ووهئ!",
+
+start: "لوبه پیل کړئ",
+
+ready: "په مناسب وخت کې ووهئ!",
+
+perfect: "عالي ویشتل! +۱۰۰",
+
+great: "ډېر ښه! +۷۵",
+
+good: "ښه ویشتل! +۵۰",
+
+poor: "کمزوری ویشتل! +۲۰",
+
+miss: "خطا! +۵",
+
+gameover: "لوبه ختمه شوه! نمرې: ",
+
+instructions:
+"<b>د لوبې لارښوونې</b><br>" +
+"لوبه پیل کړئ.<br>" +
+"سپینه نښه وګورئ.<br>" +
+"کله چې نښه د طلایي برخې منځ ته نږدې وي، ووهئ.<br>" +
+"هر څومره چې مرکز ته نږدې وي، ګلي به ډېره لرې لاړه شي."
+
+}
+
+};
+
+
+/* =========================
+   START GAME
+========================= */
+
+function startGame() {
+
+score = 0;
+round = 1;
+best = 0;
+
+playing = true;
+
+scoreDisplay.textContent = "0";
+roundDisplay.textContent = "1 / 5";
+bestDisplay.textContent = "0m";
+
+startButton.style.display = "none";
+
+message.textContent =
+words[lang].ready;
+
+gilli.style.left = "225px";
+gilli.style.bottom = "140px";
+
+gilli.style.display = "block";
+
+startTiming();
+
+}
+
+
+/* =========================
+   TIMING BAR
+========================= */
+
+function startTiming() {
+
+clearInterval(timer);
+
+position = 0;
+direction = 1;
+
+timer = setInterval(function() {
+
+if (!playing) {
+return;
+}
+
+position += direction * 2;
+
+if (position >= 100) {
+
+position = 100;
+direction = -1;
+
+}
+
+if (position <= 0) {
+
+position = 0;
+direction = 1;
+
+}
+
+pointer.style.left =
+position + "%";
+
+}, 25);
+
+}
+
+
+/* =========================
+   HIT
+========================= */
+
+function hit() {
+
+if (!playing) {
+return;
+}
+
+clearInterval(timer);
+
+
+/*
+Calculate distance
+from centre.
+*/
+
+const accuracy =
+Math.abs(50 - position);
+
+let distance = 0;
+
+
+/* PERFECT */
+
+if (accuracy <= 5) {
+
+distance = 100;
+
+message.textContent =
+words[lang].perfect;
+
+}
+
+
+/* GREAT */
+
+else if (accuracy <= 12) {
+
+distance = 75;
+
+message.textContent =
+words[lang].great;
+
+}
+
+
+/* GOOD */
+
+else if (accuracy <= 22) {
+
+distance = 50;
+
+message.textContent =
+words[lang].good;
+
+}
+
+
+/* POOR */
+
+else if (accuracy <= 35) {
+
+distance = 20;
+
+message.textContent =
+words[lang].poor;
+
+}
+
+
+/* MISS */
+
+else {
+
+distance = 5;
+
+message.textContent =
+words[lang].miss;
+
+}
+
+
+/* Random variation */
+
+distance +=
+Math.floor(
+Math.random() * 10
+);
+
+
+/* Update score */
+
+score += distance;
+
+if (distance > best) {
+best = distance;
+}
+
+scoreDisplay.textContent =
+score;
+
+bestDisplay.textContent =
+best + "m";
+
+
+/* Animate gilli */
+
+animateGilli(distance);
+
+}
+
+
+/* =========================
+   GILLI ANIMATION
+========================= */
+
+function animateGilli(distance) {
+
+let startX = 225;
+
+let startY =
+game.clientHeight - 140;
+
+let frame = 0;
+
+const frames = 45;
+
+function animate() {
+
+frame++;
+
+let progress =
+frame / frames;
+
+if (progress >= 1) {
+
+gilli.style.left =
+"225px";
+
+gilli.style.bottom =
+"140px";
+
+nextRound();
+
+return;
+
+}
+
+
+/*
+Distance controls
+how far gilli travels.
+*/
+
+let x =
+startX +
+progress *
+distance *
+2.5;
+
+
+/*
+Arc */
+
+let arc =
+Math.sin(
+progress * Math.PI
+) *
+(80 + distance);
+
+
+let y =
+startY - arc;
+
+
+gilli.style.left =
+x + "px";
+
+gilli.style.bottom =
+(game.clientHeight - y) + "px";
+
+gilli.style.transform =
+"rotate(" +
+(progress * 720) +
+"deg)";
+
+
+requestAnimationFrame(
+animate
+);
+
+}
+
+animate();
+
+}
+
+
+/* =========================
+   NEXT ROUND
+========================= */
+
+function nextRound() {
+
+round++;
+
+if (round > 5) {
+
+playing = false;
+
+message.textContent =
+words[lang].gameover +
+score;
+
+startButton.style.display =
+"block";
+
+return;
+
+}
+
+roundDisplay.textContent =
+round + " / 5";
+
+message.textContent =
+words[lang].ready;
+
+startTiming();
+
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+hitButton.addEventListener(
+"click",
+hit
+);
+
+startButton.addEventListener(
+"click",
+startGame
+);
+
+
+/* =========================
+   KEYBOARD
+========================= */
+
+document.addEventListener(
+"keydown",
+function(e) {
+
+if (
+e.code === "Space" ||
+e.code === "Enter"
+) {
+
+e.preventDefault();
+
+hit();
+
+}
+
+}
+);
+
+
+/* =========================
+   LANGUAGE
+========================= */
+
+document.getElementById(
+"language"
+).addEventListener(
+"click",
+function() {
+
+lang =
+lang === "en"
+? "ps"
+: "en";
+
+const t =
+words[lang];
+
+this.textContent =
+t.button;
+
+document.getElementById(
+"title"
+).textContent =
+t.title;
+
+document.getElementById(
+"scoreLabel"
+).textContent =
+t.score;
+
+document.getElementById(
+"roundLabel"
+).textContent =
+t.round;
+
+document.getElementById(
+"bestLabel"
+).textContent =
+t.best;
+
+document.getElementById(
+"timingTitle"
+).textContent =
+t.timing;
+
+hitButton.textContent =
+t.hit;
+
+startButton.textContent =
+t.start;
+
+document.getElementById(
+"instructions"
+).innerHTML =
+t.instructions;
+
+if (!playing) {
+
+message.textContent =
+t.ready;
+
+}
+
+}
+);
+
+</script>
+
+</body>
+</html>
