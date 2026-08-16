@@ -1,109 +1,895 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<title>Mountain Escape</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PK2N - Jalal Uddin of Khorasan | Mountain Escape</title>
 <style>
-body{margin:0;overflow:hidden;background:#87ceeb;font-family:Arial,sans-serif}
-canvas{display:block;margin:0 auto;background:linear-gradient(#87ceeb 0%,#bde0fe 40%,#8d99ae 40%,#6c757d 100%);border:4px solid #222}
-#info{position:absolute;top:10px;left:10px;color:#fff;font-size:22px;font-weight:bold;text-shadow:2px 2px 4px #000}
-#gameOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;text-align:center;font-size:36px;display:none;text-shadow:2px 2px 6px #000}
-#gameOver button{font-size:22px;padding:10px 20px;margin-top:20px;cursor:pointer}
+*{box-sizing:border-box}
+body{margin:0;background:#101827;color:#fff;font-family:Arial,sans-serif;text-align:center}
+h1{margin:12px 0 4px}
+.help{margin:4px 0 10px;color:#dbeafe}
+#wrap{position:relative;width:min(920px,96vw);margin:auto}
+canvas{display:block;width:100%;height:auto;border:4px solid #222;border-radius:12px}
+#hud{position:absolute;top:12px;left:15px;text-align:left;font-weight:bold;font-size:20px;
+text-shadow:2px 2px #000;line-height:1.5}
+#over{display:none;position:absolute;inset:0;background:#000b;border-radius:10px;
+align-items:center;justify-content:center;flex-direction:column}
+#over h2{font-size:48px;margin:0 0 8px}
+button{padding:12px 22px;margin:8px;border:0;border-radius:9px;background:#ffd54f;
+color:#222;font-weight:bold;font-size:18px;cursor:pointer}
+.small{font-size:13px;color:#9ca3af}
 </style>
 </head>
+
 <body>
 
-<div id="info">Score: 0</div>
-
-<div id="gameOver">
-<div>GAME OVER</div>
-<div id="finalScore"></div>
-<button onclick="restartGame()">Play Again</button>
+<h1>JALAL UDDIN OF KHORASAN</h1>
+<div style="font-size:32px;font-weight:bold;margin:0 0 12px;color:#fff9c4;text-shadow:2px 2px 6px #000">
+🏔️ MOUNTAIN ESCAPE
+</div>
+<div class="help">
+Jalal must defend the mountains! &nbsp; | &nbsp; ← → Move &nbsp; | &nbsp; SPACE / 🔥 Shoot Fireball
 </div>
 
-<canvas id="game" width="800" height="500"></canvas>
+<div id="wrap">
+<canvas id="game" width="920" height="540"></canvas>
+
+<div id="hud">
+❤️❤️❤️<br>
+⭐ Score: 0<br>🪨 Stones Destroyed: 0<br>
+🔥 READY
+</div>
+
+<div id="over">
+<h2>GAME OVER</h2>
+<div id="final"></div>
+<button onclick="restart()">PLAY AGAIN</button>
+</div>
+</div>
+
+<div>
+<button id="left">←</button>
+<button id="fire">🔥 FIRE</button>
+<button id="right">→</button>
+</div>
+
+<p class="small">
+Protect the mountains. Destroy as many falling stones as possible.
+</p>
 
 <script>
-const canvas=document.getElementById("game");
-const ctx=canvas.getContext("2d");
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
-// Load hero image (save your character as images/hero.png)
-const heroImage=new Image();
-heroImage.src="hero.png";
+const hud = document.getElementById("hud");
+const over = document.getElementById("over");
+const finalScore = document.getElementById("final");
 
-const info=document.getElementById("info");
-const gameOverBox=document.getElementById("gameOver");
-const finalScore=document.getElementById("finalScore");
+/* =========================================================
+   PK2N HERO SPRITES
+   IMPORTANT:
+   Put these four PNG files in the SAME folder as this HTML.
+   ========================================================= */
 
-let keys={};
-document.addEventListener("keydown",e=>keys[e.code]=true);
-document.addEventListener("keyup",e=>keys[e.code]=false);
+const heroIdle = new Image();
+const heroRight = new Image();
+const heroLeft = new Image();
+const heroShoot = new Image();
 
-let player,rocks,score,gameOver,gravity,spawnTimer,speed;
+heroIdle.src = "pk2n_hero_idle.png";
+heroRight.src = "pk2n_hero_run_right.png";
+heroLeft.src = "pk2n_hero_run_left.png";
+heroShoot.src = "pk2n_hero_shoot_up.png";
 
-function resetGame(){
-player={
-x:canvas.width/2-35,
-y:canvas.height-130,
-width:70,
-height:110,
-vx:0,vy:0,speed:5,jumpPower:-14,grounded:true};
-rocks=[];score=0;gameOver=false;gravity=.7;spawnTimer=0;speed=4;
-gameOverBox.style.display="none";
+
+let keys = {};
+
+let player;
+let rocks;
+let fireballs;
+
+let score;
+let stonesDestroyed;
+let lives;
+let spawnTimer;
+let cooldown;
+let dead;
+let difficulty;
+
+let shootingTimer = 0;
+
+document.addEventListener("keydown", function(e){
+
+    keys[e.code] = true;
+
+    if(
+        e.code === "ArrowLeft" ||
+        e.code === "ArrowRight" ||
+        e.code === "Space"
+    ){
+        e.preventDefault();
+    }
+
+});
+
+document.addEventListener("keyup", function(e){
+    keys[e.code] = false;
+});
+
+
+function reset(){
+
+    player = {
+        x: 435,
+        y: 390,
+        width: 75,
+        height: 105,
+        speed: 6
+    };
+
+    rocks = [];
+    fireballs = [];
+
+    score = 0;
+    stonesDestroyed = 0;
+    lives = 3;
+
+    spawnTimer = 0;
+    cooldown = 0;
+
+    difficulty = 3.2;
+
+    dead = false;
+    shootingTimer = 0;
+
+    over.style.display = "none";
 }
+
+
+function shootFireball(){
+
+    if(dead) return;
+
+    if(cooldown > 0) return;
+
+    fireballs.push({
+
+        x: player.x + player.width / 2,
+
+        y: player.y + 5,
+
+        radius: 10,
+
+        speed: 13
+
+    });
+
+    cooldown = 20;
+
+    shootingTimer = 10;
+}
+
 
 function createRock(){
-const size=Math.random()*30+20;
-rocks.push({x:Math.random()*(canvas.width-size),y:-size,size:size,speed:speed+Math.random()*3});
+
+    const size = 24 + Math.random() * 30;
+
+    rocks.push({
+
+        x: Math.random() * (920 - size),
+
+        y: -size,
+
+        size: size,
+
+        speed: difficulty + Math.random() * 2.5,
+
+        rotation: Math.random() * Math.PI * 2
+
+    });
+
 }
+
+
+function rockHitsPlayer(rock){
+
+    return (
+
+        player.x < rock.x + rock.size &&
+
+        player.x + player.width > rock.x &&
+
+        player.y < rock.y + rock.size &&
+
+        player.y + player.height > rock.y
+
+    );
+
+}
+
 
 function update(){
-if(gameOver)return;
-score++;info.textContent="Score: "+score;
-if(score%500===0)speed+=.5;
-player.vx=0;
-if(keys["ArrowLeft"])player.vx=-player.speed;
-if(keys["ArrowRight"])player.vx=player.speed;
-if(keys["Space"]&&player.grounded){player.vy=player.jumpPower;player.grounded=false;}
-player.x+=player.vx;
-player.vy+=gravity;
-player.y+=player.vy;
-if(player.y+player.height>=canvas.height-20){player.y=canvas.height-20-player.height;player.vy=0;player.grounded=true;}
-if(player.x<0)player.x=0;
-if(player.x+player.width>canvas.width)player.x=canvas.width-player.width;
-spawnTimer++;
-if(spawnTimer>40){createRock();spawnTimer=0;}
-for(let i=rocks.length-1;i>=0;i--){
-const r=rocks[i];r.y+=r.speed;
-if(player.x<r.x+r.size&&player.x+player.width>r.x&&player.y<r.y+r.size&&player.y+player.height>r.y)endGame();
-if(r.y>canvas.height)rocks.splice(i,1);
-}
+
+    if(dead) return;
+
+
+    /* Movement */
+
+    if(keys.ArrowLeft){
+
+        player.x -= player.speed;
+
+    }
+
+    if(keys.ArrowRight){
+
+        player.x += player.speed;
+
+    }
+
+
+    player.x = Math.max(
+        5,
+        Math.min(840, player.x)
+    );
+
+
+    /* Fire */
+
+    if(keys.Space){
+
+        shootFireball();
+
+        keys.Space = false;
+
+    }
+
+
+    if(cooldown > 0){
+
+        cooldown--;
+
+    }
+
+
+    if(shootingTimer > 0){
+
+        shootingTimer--;
+
+    }
+
+
+    /* Original score: staying in the game longer increases score */
+    score++;
+
+    if(score % 1000 === 0){
+        difficulty += 0.35;
+    }
+
+    /* Difficulty also responds to stones destroyed */
+    if(stonesDestroyed > 0 && stonesDestroyed % 10 === 0){
+        difficulty = Math.max(
+            difficulty,
+            3.2 + Math.floor(stonesDestroyed / 10) * 0.35
+        );
+    }
+
+
+    /* Create rocks */
+
+    const interval = Math.max(
+        22,
+        62 - Math.floor(stonesDestroyed / 6)
+    );
+
+
+    spawnTimer++;
+
+
+    if(spawnTimer > interval){
+
+        createRock();
+
+        spawnTimer = 0;
+
+    }
+
+
+    /* Fireballs */
+
+    for(let i = fireballs.length - 1; i >= 0; i--){
+
+        const fireball = fireballs[i];
+
+        fireball.y -= fireball.speed;
+
+
+        if(fireball.y < -30){
+
+            fireballs.splice(i,1);
+
+        }
+
+    }
+
+
+    /* Rocks */
+
+    for(let i = rocks.length - 1; i >= 0; i--){
+
+        const rock = rocks[i];
+
+        rock.y += rock.speed;
+        rock.rotation += 0.03;
+
+
+        let destroyed = false;
+
+
+        /* Fireball collision */
+
+        for(
+            let j = fireballs.length - 1;
+            j >= 0;
+            j--
+        ){
+
+            const fireball = fireballs[j];
+
+            const rockCenterX =
+                rock.x + rock.size / 2;
+
+            const rockCenterY =
+                rock.y + rock.size / 2;
+
+
+            const distance = Math.hypot(
+
+                fireball.x - rockCenterX,
+
+                fireball.y - rockCenterY
+
+            );
+
+
+            if(
+                distance <
+                rock.size / 2 +
+                fireball.radius
+            ){
+
+                rocks.splice(i,1);
+
+                fireballs.splice(j,1);
+
+                stonesDestroyed++;
+                score += 120;
+
+                destroyed = true;
+
+                break;
+
+            }
+
+        }
+
+
+        if(destroyed) continue;
+
+
+        /* Player collision */
+
+        if(rockHitsPlayer(rock)){
+
+            rocks.splice(i,1);
+
+            lives--;
+
+
+            if(lives <= 0){
+
+                dead = true;
+
+                finalScore.textContent =
+                    "⭐ Score: " +
+                    Math.floor(score / 10) +
+                    " | 🪨 Stones Destroyed: " +
+                    stonesDestroyed;
+
+                over.style.display = "flex";
+
+            }
+
+            continue;
+
+        }
+
+
+        if(rock.y > 540){
+
+            rocks.splice(i,1);
+
+        }
+
+    }
+
 }
 
-function drawMountain(){
-ctx.fillStyle="#495057";
-ctx.beginPath();ctx.moveTo(0,500);ctx.lineTo(200,180);ctx.lineTo(400,500);ctx.closePath();ctx.fill();
-ctx.beginPath();ctx.moveTo(250,500);ctx.lineTo(520,120);ctx.lineTo(800,500);ctx.closePath();ctx.fill();
-ctx.fillStyle="white";
-ctx.beginPath();ctx.moveTo(480,150);ctx.lineTo(520,120);ctx.lineTo(560,170);ctx.closePath();ctx.fill();
+
+function drawMountains(){
+
+    const gradient =
+        ctx.createLinearGradient(
+            0,0,0,540
+        );
+
+    gradient.addColorStop(
+        0,
+        "#5db4ee"
+    );
+
+    gradient.addColorStop(
+        1,
+        "#dff5ff"
+    );
+
+
+    ctx.fillStyle = gradient;
+
+    ctx.fillRect(
+        0,
+        0,
+        920,
+        540
+    );
+
+
+    /* Sun */
+
+    ctx.fillStyle = "#ffe082";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        770,
+        80,
+        44,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /* Mountains */
+
+    const mountains = [
+
+        [-130,205,550,"#587789"],
+
+        [230,125,600,"#3d5c70"],
+
+        [590,180,500,"#526f7d"]
+
+    ];
+
+
+    mountains.forEach(mountain => {
+
+        ctx.fillStyle = mountain[3];
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            mountain[0],
+            490
+        );
+
+        ctx.lineTo(
+            mountain[0] +
+            mountain[2] / 2,
+            mountain[1]
+        );
+
+        ctx.lineTo(
+            mountain[0] +
+            mountain[2],
+            490
+        );
+
+        ctx.closePath();
+
+        ctx.fill();
+
+    });
+
+
+    /* Snow */
+
+    ctx.fillStyle = "#f7fcff";
+
+    const snow = [
+
+        [145,210],
+
+        [530,135],
+
+        [820,185]
+
+    ];
+
+
+    snow.forEach(point => {
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            point[0],
+            point[1]
+        );
+
+        ctx.lineTo(
+            point[0] + 40,
+            point[1] + 48
+        );
+
+        ctx.lineTo(
+            point[0] - 40,
+            point[1] + 48
+        );
+
+        ctx.closePath();
+
+        ctx.fill();
+
+    });
+
+
+    /* Ground */
+
+    ctx.fillStyle = "#315b38";
+
+    ctx.fillRect(
+        0,
+        490,
+        920,
+        50
+    );
+
+    ctx.fillStyle = "#699b55";
+
+    ctx.fillRect(
+        0,
+        490,
+        920,
+        6
+    );
+
 }
-function drawGround(){ctx.fillStyle="#3a5a40";ctx.fillRect(0,480,800,20);}
-function drawPlayer(){
-if(heroImage.complete&&heroImage.naturalWidth>0){
-ctx.drawImage(heroImage,player.x,player.y,player.width,player.height);
-}else{
-ctx.fillStyle="#2b2d42";
-ctx.fillRect(player.x,player.y,player.width,player.height);
-}}
+
+
 function drawRocks(){
-ctx.fillStyle="#6b705c";
-rocks.forEach(r=>{ctx.beginPath();ctx.arc(r.x+r.size/2,r.y+r.size/2,r.size/2,0,Math.PI*2);ctx.fill();});
+
+    rocks.forEach(rock => {
+
+        ctx.save();
+
+        ctx.translate(
+            rock.x + rock.size / 2,
+            rock.y + rock.size / 2
+        );
+
+        ctx.rotate(
+            rock.rotation
+        );
+
+        ctx.fillStyle = "#554133";
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            -rock.size * .5,
+            0
+        );
+
+        ctx.lineTo(
+            -rock.size * .2,
+            -rock.size * .5
+        );
+
+        ctx.lineTo(
+            rock.size * .38,
+            -rock.size * .4
+        );
+
+        ctx.lineTo(
+            rock.size * .5,
+            rock.size * .15
+        );
+
+        ctx.lineTo(
+            rock.size * .1,
+            rock.size * .5
+        );
+
+        ctx.closePath();
+
+        ctx.fill();
+
+        ctx.restore();
+
+    });
+
 }
-function draw(){ctx.clearRect(0,0,800,500);drawMountain();drawGround();drawPlayer();drawRocks();}
-function gameLoop(){update();draw();requestAnimationFrame(gameLoop);}
-function endGame(){gameOver=true;finalScore.textContent="Final Score: "+score;gameOverBox.style.display="block";}
-function restartGame(){resetGame();}
-resetGame();gameLoop();
+
+
+function drawFireballs(){
+
+    fireballs.forEach(fireball => {
+
+        const glow =
+            ctx.createRadialGradient(
+                fireball.x,
+                fireball.y,
+                2,
+                fireball.x,
+                fireball.y,
+                24
+            );
+
+
+        glow.addColorStop(
+            0,
+            "#fff7a0"
+        );
+
+        glow.addColorStop(
+            .25,
+            "#ff3b20"
+        );
+
+        glow.addColorStop(
+            1,
+            "#a90000"
+        );
+
+
+        ctx.fillStyle = glow;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            fireball.x,
+            fireball.y,
+            19,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+
+        ctx.fillStyle = "#ff1b0b";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            fireball.x,
+            fireball.y,
+            9,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+    });
+
+}
+
+
+function getHeroSprite(){
+
+    if(shootingTimer > 0){
+
+        return heroShoot;
+
+    }
+
+    if(keys.ArrowRight){
+
+        return heroRight;
+
+    }
+
+    if(keys.ArrowLeft){
+
+        return heroLeft;
+
+    }
+
+    return heroIdle;
+
+}
+
+
+function drawHero(){
+
+    const sprite =
+        getHeroSprite();
+
+
+    /*
+       The four supplied sprites have transparent
+       backgrounds, so they can be drawn directly
+       over the mountain scene.
+    */
+
+    if(sprite.complete){
+
+        ctx.drawImage(
+
+            sprite,
+
+            player.x,
+            player.y,
+            player.width,
+            player.height
+
+        );
+
+    }
+
+}
+
+
+function drawHUD(){
+
+    let hearts = "";
+
+    for(let i = 0; i < 3; i++){
+
+        hearts +=
+            i < lives
+            ? "❤️"
+            : "🖤";
+
+    }
+
+
+    hud.innerHTML =
+
+        hearts +
+        "<br>" +
+
+        "⭐ Score: " +
+        Math.floor(score / 10) +
+        "<br>" +
+
+        "🪨 Stones Destroyed: " +
+        stonesDestroyed +
+        "<br>" +
+
+        (
+            cooldown === 0
+            ? "🔥 READY"
+            : "⏳ RECHARGING"
+        );
+
+}
+
+
+function draw(){
+
+    ctx.clearRect(
+        0,
+        0,
+        920,
+        540
+    );
+
+
+    drawMountains();
+
+    drawRocks();
+
+    drawFireballs();
+
+    drawHero();
+
+    drawHUD();
+
+}
+
+
+function gameLoop(){
+
+    update();
+
+    draw();
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+function restart(){
+
+    reset();
+
+}
+
+
+/* Mobile controls */
+
+function bindButton(
+    id,
+    code,
+    shooting = false
+){
+
+    const button =
+        document.getElementById(id);
+
+
+    button.onpointerdown = function(){
+
+        if(shooting){
+
+            shootFireball();
+
+        }else{
+
+            keys[code] = true;
+
+        }
+
+    };
+
+
+    button.onpointerup = function(){
+
+        keys[code] = false;
+
+    };
+
+
+    button.onpointerleave = function(){
+
+        keys[code] = false;
+
+    };
+
+}
+
+
+bindButton(
+    "left",
+    "ArrowLeft"
+);
+
+bindButton(
+    "right",
+    "ArrowRight"
+);
+
+bindButton(
+    "fire",
+    "Space",
+    true
+);
+
+
+/* Start */
+
+reset();
+
+gameLoop();
+
 </script>
-</body></html>
+
+</body>
+</html>
