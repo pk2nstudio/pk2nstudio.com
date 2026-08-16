@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PK2N | Games</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    min-height:100vh;
+    background:linear-gradient(
+        to bottom,
+        #7EC8FF 0%,
+        #4FA3FF 55%,
+        #1E88E5 100%
+    );
+    color:white;
+    overflow-x:hidden;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+nav{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:25px 70px;
+    position:relative;
+    z-index:10;
+}
+
+.logo{
+    font-size:34px;
+    font-weight:bold;
+}
+
+.menu a{
+    color:white;
+    text-decoration:none;
+    margin-left:35px;
+    font-size:20px;
+    transition:.3s;
+}
+
+.menu a:hover{
+    color:#FFD54F;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    text-align:center;
+    padding:55px 20px 40px;
+}
+
+.header h1{
+    font-size:64px;
+    margin-bottom:15px;
+    text-shadow:4px 4px 10px rgba(0,0,0,.35);
+}
+
+.header p{
+    font-size:24px;
+    color:#FFF9C4;
+    letter-spacing:2px;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+    padding-bottom:80px;
+}
+
+/* =========================
+   GAME SECTION
+========================= */
+
+.game-section{
+    margin-bottom:55px;
+}
+
+.section-title{
+    font-size:34px;
+    margin-bottom:25px;
+    padding-bottom:12px;
+    border-bottom:2px solid rgba(255,255,255,.35);
+    text-shadow:2px 2px 5px rgba(0,0,0,.3);
+}
+
+/* =========================
+   GAME GRID
+========================= */
+
+.game-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(260px,1fr));
+    gap:25px;
+}
+
+/* =========================
+   GAME CARD
+========================= */
+
+.game-card{
+    background:rgba(0,0,0,.22);
+    border:2px solid rgba(255,255,255,.25);
+    border-radius:18px;
+    padding:30px 25px;
+    text-align:center;
+    box-shadow:
+        0 12px 25px rgba(0,0,0,.25);
+    transition:.3s;
+}
+
+.game-card:hover{
+    transform:translateY(-7px);
+    background:rgba(0,0,0,.30);
+    border-color:#FFD54F;
+}
+
+.game-icon{
+    font-size:65px;
+    margin-bottom:15px;
+}
+
+.game-card h3{
+    font-size:25px;
+    margin-bottom:12px;
+}
+
+.game-card p{
+    font-size:17px;
+    line-height:1.5;
+    color:#E8F4FF;
+    min-height:52px;
+    margin-bottom:22px;
+}
+
+/* =========================
+   PLAY BUTTON
+========================= */
+
+.play-button{
+    display:inline-block;
+    padding:13px 28px;
+    background:#FFD54F;
+    color:#222;
+    font-size:18px;
+    font-weight:bold;
+    border-radius:10px;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.play-button:hover{
+    transform:scale(1.06);
+}
+
+.coming-soon{
+    background:rgba(255,255,255,.18);
+    color:white;
+    cursor:default;
+}
+
+/* =========================
+   FEATURED GAME
+========================= */
+
+.featured{
+    border:3px solid #FFD54F;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,0,0,.32),
+            rgba(0,0,0,.18)
+        );
+}
+
+.featured h3{
+    color:#FFF9C4;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    text-align:center;
+    padding:25px;
+    font-size:17px;
+    background:rgba(0,0,0,.15);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+    nav{
+        padding:20px;
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .menu a{
+        margin:0 8px;
+        font-size:16px;
+    }
+
+    .header{
+        padding-top:30px;
+    }
+
+    .header h1{
+        font-size:40px;
+    }
+
+    .header p{
+        font-size:18px;
+    }
+
+    .section-title{
+        font-size:27px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+
+    <div class="logo">
+        ⚔️ PK2N
+    </div>
+
+    <div class="menu">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="games.html">
+            Games
+        </a>
+
+        <a href="#">
+            About
+        </a>
+
+        <a href="#">
+            Contact
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+
+<div class="header">
+
+    <h1>🎮 PK2N GAMES</h1>
+
+    <p>
+        PASHTUN GAMES • STORIES • ADVENTURES
+    </p>
+
+</div>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     ADVENTURE & ACTION
+===================================================== -->
+
+<section class="game-section">
+
+    <h2 class="section-title">
+        🏔️ ADVENTURE & ACTION
+    </h2>
+
+    <div class="game-grid">
+
+
+        <div class="game-card featured">
+
+            <div class="game-icon">
+                🏔️
+            </div>
+
+            <h3>
+                Jalal Uddin of Khorasan
+            </h3>
+
+            <p>
+                Mountain Escape
+            </p>
+
+            <a
+                href="mountain_game_with_hero.html"
+                class="play-button">
+
+                ▶ PLAY GAME
+
+            </a>
+
+        </div>
+
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🏹
+            </div>
+
+            <h3>
+                Mountain Target
+            </h3>
+
+            <p>
+                Test your aim in the mountains.
+            </p>
+
+            <span class="play-button coming-soon">
+                COMING SOON
+            </span>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PASHTUN TRADITIONAL GAMES
+===================================================== -->
+
+<section class="game-section">
+
+    <h2 class="section-title">
+        🏔️ PASHTUN TRADITIONAL GAMES
+    </h2>
+
+    <div class="game-grid">
+
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🏏
+            </div>
+
+            <h3>
+                Gilli Danda
+            </h3>
+
+            <p>
+                A traditional Pashtun game brought to the PK2N platform.
+            </p>
+
+            <span class="play-button coming-soon">
+                PLAY GAME
+            </span>
+
+        </div>
+
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🐎
+            </div>
+
+            <h3>
+                Buzkashi
+            </h3>
+
+            <p>
+                Ride, compete and take the ball to victory.
+            </p>
+
+            <span class="play-button coming-soon">
+                PLAY GAME
+            </span>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     BOARD & CLASSIC GAMES
+===================================================== -->
+
+<section class="game-section">
+
+    <h2 class="section-title">
+        ♟️ BOARD & CLASSIC GAMES
+    </h2>
+
+    <div class="game-grid">
+
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🎲
+            </div>
+
+            <h3>
+                PK2N Ludo
+            </h3>
+
+            <p>
+                A Pashtun-inspired version of the classic board game.
+            </p>
+
+            <span class="play-button coming-soon">
+                PLAY GAME
+            </span>
+
+        </div>
+
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                ♟️
+            </div>
+
+            <h3>
+                Pashtun Chess
+            </h3>
+
+            <p>
+                A classic strategy game with PK2N style.
+            </p>
+
+            <span class="play-button coming-soon">
+                PLAY GAME
+            </span>
+
+        </div>
+
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🔴
+            </div>
+
+            <h3>
+                Pashtun Checkers
+            </h3>
+
+            <p>
+                Classic checkers with a Pashtun-inspired design.
+            </p>
+
+            <span class="play-button coming-soon">
+                PLAY GAME
+            </span>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SPORTS & SKILL
+===================================================== -->
+
+<section class="game-section">
+
+    <h2 class="section-title">
+        🎯 SPORTS & SKILL
+    </h2>
+
+    <div class="game-grid">
+
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🎱
+            </div>
+
+            <h3>
+                Pashtun Snooker
+            </h3>
+
+            <p>
+                A classic cue-sport game with PK2N branding.
+            </p>
+
+            <span class="play-button coming-soon">
+                PLAY GAME
+            </span>
+
+        </div>
+
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🎯
+            </div>
+
+            <h3>
+                Mountain Archery
+            </h3>
+
+            <p>
+                Aim carefully and hit your targets.
+            </p>
+
+            <span class="play-button coming-soon">
+                COMING SOON
+            </span>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     MORE GAMES
+===================================================== -->
+
+<section class="game-section">
+
+    <h2 class="section-title">
+        🌄 MORE ADVENTURES
+    </h2>
+
+    <div class="game-grid">
+
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                ⚔️
+            </div>
+
+            <h3>
+                More PK2N Adventures
+            </h3>
+
+            <p>
+                New Pashtun characters, stories and games are coming.
+            </p>
+
+            <span class="play-button coming-soon">
+                COMING SOON
+            </span>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    ⛰️ PK2N STUDIO
+    <br>
+    More adventures coming soon...
+
+</footer>
+
+
+</body>
+</html>
