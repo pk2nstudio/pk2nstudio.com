@@ -1,0 +1,3192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>PK2N Studio - Buzkashi</title>
+
+
+<style>
+
+/* =========================================
+   BASIC
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    padding: 15px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            rgba(10,30,25,.55),
+            rgba(35,20,10,.7)
+        ),
+        linear-gradient(
+            135deg,
+            #193b35,
+            #61462a
+        );
+
+    display: flex;
+
+    justify-content: center;
+}
+
+
+.game {
+
+    width: 100%;
+
+    max-width: 1100px;
+
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.logo {
+
+    text-align: center;
+
+    margin-bottom: 8px;
+
+}
+
+
+.logo h1 {
+
+    margin: 0;
+
+    color: #e5bd55;
+
+    font-size:
+        clamp(30px, 6vw, 55px);
+
+    letter-spacing: 6px;
+
+    text-shadow:
+        0 3px 12px #000;
+
+}
+
+
+.logo p {
+
+    margin:
+        5px 0 12px;
+
+    color: #d5c18c;
+
+    letter-spacing: 4px;
+
+    font-size: 12px;
+
+}
+
+
+/* =========================================
+   LANGUAGE
+========================================= */
+
+.language {
+
+    text-align: center;
+
+    margin-bottom: 12px;
+
+}
+
+
+.language button {
+
+    padding:
+        8px 20px;
+
+    border-radius:
+        20px;
+
+    border:
+        2px solid #d5ad4c;
+
+    background:
+        #23473d;
+
+    color:
+        #f1d273;
+
+    cursor:
+        pointer;
+
+    font-family:
+        Georgia,
+        serif;
+
+}
+
+
+/* =========================================
+   GAME LAYOUT
+========================================= */
+
+.game-layout {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(400px, 700px)
+        260px;
+
+    gap: 18px;
+
+    justify-content: center;
+
+    align-items: start;
+
+}
+
+
+/* =========================================
+   FIELD FRAME
+========================================= */
+
+.field-frame {
+
+    padding: 12px;
+
+    border-radius:
+        18px;
+
+    background:
+
+        repeating-linear-gradient(
+            45deg,
+            #5a2b1f 0px,
+            #5a2b1f 7px,
+            #9a722f 7px,
+            #9a722f 10px,
+            #245044 10px,
+            #245044 14px
+        );
+
+    border:
+        4px solid #d1a846;
+
+    box-shadow:
+        0 18px 40px #000b;
+
+}
+
+
+/* =========================================
+   FIELD
+========================================= */
+
+.field {
+
+    position:
+        relative;
+
+    width:
+        100%;
+
+    aspect-ratio:
+        1.55 / 1;
+
+    overflow:
+        hidden;
+
+    border:
+        5px solid #352116;
+
+    border-radius:
+        10px;
+
+    background:
+
+        radial-gradient(
+            circle at 50% 50%,
+            #8a7643 0%,
+            #657347 35%,
+            #426345 70%,
+            #31503b 100%
+        );
+
+    box-shadow:
+        inset 0 0 40px #17291c;
+
+}
+
+
+/* =========================================
+   MOUNTAINS
+========================================= */
+
+.mountain {
+
+    position:
+        absolute;
+
+    bottom:
+        0;
+
+    width:
+        0;
+
+    height:
+        0;
+
+    border-left:
+        150px solid transparent;
+
+    border-right:
+        150px solid transparent;
+
+    border-bottom:
+        210px solid rgba(55,65,55,.6);
+
+    z-index:
+        1;
+
+}
+
+
+.mountain.one {
+
+    left:
+        -50px;
+
+}
+
+
+.mountain.two {
+
+    left:
+        22%;
+
+    transform:
+        scale(1.25);
+
+    opacity:
+        .75;
+
+}
+
+
+.mountain.three {
+
+    right:
+        -60px;
+
+    transform:
+        scale(.9);
+
+    opacity:
+        .65;
+
+}
+
+
+/* =========================================
+   FIELD MARKINGS
+========================================= */
+
+.mid-line {
+
+    position:
+        absolute;
+
+    left:
+        50%;
+
+    top:
+        0;
+
+    height:
+        100%;
+
+    width:
+        3px;
+
+    background:
+        rgba(231,213,157,.35);
+
+    z-index:
+        2;
+
+}
+
+
+.center-circle {
+
+    position:
+        absolute;
+
+    left:
+        50%;
+
+    top:
+        50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    width:
+        22%;
+
+    aspect-ratio:
+        1;
+
+    border:
+        3px solid
+        rgba(231,213,157,.4);
+
+    border-radius:
+        50%;
+
+    z-index:
+        2;
+
+}
+
+
+/* =========================================
+   GOALS
+========================================= */
+
+.goal {
+
+    position:
+        absolute;
+
+    top:
+        20%;
+
+    width:
+        15%;
+
+    height:
+        60%;
+
+    border:
+        4px dashed #f1d273;
+
+    background:
+        rgba(218,175,64,.20);
+
+    z-index:
+        3;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    color:
+        #f5d87d;
+
+    font-size:
+        12px;
+
+    font-weight:
+        bold;
+
+    text-align:
+        center;
+
+    text-shadow:
+        0 2px 3px #000;
+
+    letter-spacing:
+        1px;
+
+}
+
+
+.goal.left {
+
+    left:
+        1%;
+
+}
+
+
+.goal.right {
+
+    right:
+        1%;
+
+}
+
+
+/* =========================================
+   PLAYER
+========================================= */
+
+.player-horse {
+
+    position:
+        absolute;
+
+    width:
+        55px;
+
+    height:
+        45px;
+
+    z-index:
+        20;
+
+    transform:
+        translate(-50%, -50%);
+
+    font-size:
+        35px;
+
+    line-height:
+        42px;
+
+    text-align:
+        center;
+
+    user-select:
+        none;
+
+    filter:
+        sepia(.55)
+        saturate(1.4)
+        brightness(1.35)
+        drop-shadow(
+            2px 4px 3px #0009
+        );
+
+}
+
+
+/* =========================================
+   COMPUTER HORSES
+========================================= */
+
+.enemy {
+
+    position:
+        absolute;
+
+    width:
+        45px;
+
+    height:
+        38px;
+
+    z-index:
+        15;
+
+    transform:
+        translate(-50%, -50%);
+
+    font-size:
+        30px;
+
+    text-align:
+        center;
+
+    user-select:
+        none;
+
+    filter:
+        sepia(.9)
+        saturate(1.7)
+        brightness(.65)
+        drop-shadow(
+            2px 4px 3px #0009
+        );
+
+}
+
+
+/* =========================================
+   BALL
+========================================= */
+
+.target {
+
+    position:
+        absolute;
+
+    width:
+        32px;
+
+    height:
+        32px;
+
+    border-radius:
+        50%;
+
+    background:
+
+        radial-gradient(
+            circle at 30% 25%,
+            #d79a5c,
+            #8b4c28 55%,
+            #351b11 100%
+        );
+
+    border:
+        3px solid #d0a65c;
+
+    box-shadow:
+        0 4px 8px #000b;
+
+    z-index:
+        10;
+
+    transform:
+        translate(-50%, -50%);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        15px;
+
+}
+
+
+/* =========================================
+   POSSESSION
+========================================= */
+
+.possession {
+
+    position:
+        absolute;
+
+    top:
+        8px;
+
+    left:
+        50%;
+
+    transform:
+        translateX(-50%);
+
+    z-index:
+        30;
+
+    padding:
+        5px 12px;
+
+    border-radius:
+        20px;
+
+    background:
+        rgba(0,0,0,.55);
+
+    border:
+        1px solid #d9b85b;
+
+    color:
+        #f3d679;
+
+    font-size:
+        11px;
+
+    letter-spacing:
+        1px;
+
+    pointer-events:
+        none;
+
+}
+
+
+/* =========================================
+   SIDE PANEL
+========================================= */
+
+.panel {
+
+    padding:
+        15px;
+
+    border:
+        3px solid #8d682b;
+
+    border-radius:
+        15px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            #402619,
+            #21150e
+        );
+
+    box-shadow:
+        0 10px 25px #0009;
+
+    text-align:
+        center;
+
+}
+
+
+.label {
+
+    color:
+        #d8b85a;
+
+    font-size:
+        11px;
+
+    letter-spacing:
+        2px;
+
+    margin-bottom:
+        5px;
+
+}
+
+
+.score {
+
+    font-size:
+        34px;
+
+    color:
+        #f0d274;
+
+    font-weight:
+        bold;
+
+    margin-bottom:
+        15px;
+
+}
+
+
+.computer-score-title {
+
+    color:
+        #d8b85a;
+
+    font-size:
+        11px;
+
+    letter-spacing:
+        2px;
+
+    margin-bottom:
+        8px;
+
+}
+
+
+/* =========================================
+   RIDER SCORES
+========================================= */
+
+.rider-scores {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        5px;
+
+    margin-bottom:
+        15px;
+
+}
+
+
+.rider-score {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    padding:
+        6px 9px;
+
+    border:
+        1px solid #62482b;
+
+    border-radius:
+        6px;
+
+    background:
+        rgba(0,0,0,.25);
+
+    color:
+        #e1d2ad;
+
+    font-size:
+        12px;
+
+}
+
+
+.rider-score span:last-child {
+
+    color:
+        #e39a6d;
+
+    font-weight:
+        bold;
+
+}
+
+
+.timer {
+
+    font-size:
+        24px;
+
+    color:
+        #e4d09b;
+
+    margin-bottom:
+        15px;
+
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.message {
+
+    min-height:
+        85px;
+
+    color:
+        #e8d8ad;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.5;
+
+    margin-bottom:
+        10px;
+
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.new-game {
+
+    width:
+        100%;
+
+    padding:
+        11px;
+
+    border:
+        2px solid #e0b957;
+
+    border-radius:
+        9px;
+
+    background:
+
+        linear-gradient(
+            #a93427,
+            #6e1f1a
+        );
+
+    color:
+        white;
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-weight:
+        bold;
+
+    cursor:
+        pointer;
+
+}
+
+
+.new-game:hover {
+
+    filter:
+        brightness(1.15);
+
+}
+
+
+/* =========================================
+   CONTROLS
+========================================= */
+
+.controls {
+
+    margin-top:
+        14px;
+
+    padding:
+        10px;
+
+    border:
+        1px solid #70522a;
+
+    border-radius:
+        8px;
+
+    color:
+        #cdbb91;
+
+    font-size:
+        11px;
+
+    line-height:
+        1.6;
+
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer {
+
+    text-align:
+        center;
+
+    margin-top:
+        12px;
+
+    color:
+        #d7c18b;
+
+    font-size:
+        12px;
+
+    letter-spacing:
+        2px;
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:800px) {
+
+    .game-layout {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .panel {
+
+        max-width:
+            500px;
+
+        width:
+            100%;
+
+        margin:
+            auto;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="game">
+
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<div class="logo">
+
+    <h1>PK2N STUDIO</h1>
+
+    <p>BUZKHASI • BUZKASHI</p>
+
+</div>
+
+
+<!-- LANGUAGE -->
+
+<div class="language">
+
+    <button id="languageButton">
+        پښتو
+    </button>
+
+</div>
+
+
+<div class="game-layout">
+
+
+<!-- =========================================
+     FIELD
+========================================= -->
+
+<div class="field-frame">
+
+<div id="field" class="field">
+
+
+    <div class="mountain one"></div>
+
+    <div class="mountain two"></div>
+
+    <div class="mountain three"></div>
+
+
+    <div class="mid-line"></div>
+
+    <div class="center-circle"></div>
+
+
+    <div class="goal left">
+        GOAL
+    </div>
+
+    <div class="goal right">
+        GOAL
+    </div>
+
+
+    <div
+        id="possession"
+        class="possession">
+
+        BALL FREE
+
+    </div>
+
+
+    <div
+        id="target"
+        class="target">
+
+        ●
+
+    </div>
+
+
+    <!-- PLAYER -->
+
+    <div
+        id="playerHorse"
+        class="player-horse">
+
+        🐎
+
+    </div>
+
+
+    <!-- FIVE COMPUTER RIDERS -->
+
+    <div
+        id="enemy1"
+        class="enemy">
+
+        🐎
+
+    </div>
+
+    <div
+        id="enemy2"
+        class="enemy">
+
+        🐎
+
+    </div>
+
+    <div
+        id="enemy3"
+        class="enemy">
+
+        🐎
+
+    </div>
+
+    <div
+        id="enemy4"
+        class="enemy">
+
+        🐎
+
+    </div>
+
+    <div
+        id="enemy5"
+        class="enemy">
+
+        🐎
+
+    </div>
+
+
+</div>
+
+</div>
+
+
+<!-- =========================================
+     SIDE PANEL
+========================================= -->
+
+<div class="panel">
+
+
+    <!-- PLAYER SCORE -->
+
+    <div
+        id="scoreLabel"
+        class="label">
+
+        YOUR SCORE
+
+    </div>
+
+
+    <div
+        id="score"
+        class="score">
+
+        0
+
+    </div>
+
+
+    <!-- COMPUTER SCORES -->
+
+    <div
+        id="computerScoreLabel"
+        class="computer-score-title">
+
+        COMPUTER RIDERS
+
+    </div>
+
+
+    <div class="rider-scores">
+
+
+        <div class="rider-score">
+
+            <span>Rider 1</span>
+
+            <span id="riderScore1">
+                0
+            </span>
+
+        </div>
+
+
+        <div class="rider-score">
+
+            <span>Rider 2</span>
+
+            <span id="riderScore2">
+                0
+            </span>
+
+        </div>
+
+
+        <div class="rider-score">
+
+            <span>Rider 3</span>
+
+            <span id="riderScore3">
+                0
+            </span>
+
+        </div>
+
+
+        <div class="rider-score">
+
+            <span>Rider 4</span>
+
+            <span id="riderScore4">
+                0
+            </span>
+
+        </div>
+
+
+        <div class="rider-score">
+
+            <span>Rider 5</span>
+
+            <span id="riderScore5">
+                0
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- TIMER -->
+
+    <div
+        id="timeLabel"
+        class="label">
+
+        TIME
+
+    </div>
+
+
+    <div
+        id="timer"
+        class="timer">
+
+        60
+
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div
+        id="message"
+        class="message">
+
+        Get to the ball before
+        the computer riders do.
+
+    </div>
+
+
+    <!-- NEW GAME -->
+
+    <button
+        id="newGame"
+        class="new-game">
+
+        ↻ NEW GAME
+
+    </button>
+
+
+    <!-- CONTROLS -->
+
+    <div
+        id="controls"
+        class="controls">
+
+        <b>CONTROLS</b>
+
+        <br><br>
+
+        ↑ W — Move Up
+
+        <br>
+
+        ↓ S — Move Down
+
+        <br>
+
+        ← A — Move Left
+
+        <br>
+
+        → D — Move Right
+
+        <br><br>
+
+        🟤 Get the ball first.
+
+        <br>
+
+        🏁 Take it to the GOAL.
+
+        <br>
+
+        🐎 Stop the computer riders.
+
+        <br><br>
+
+        ⭐ Reach 25 points to
+        scatter everyone.
+
+    </div>
+
+
+</div>
+
+</div>
+
+
+<div class="footer">
+
+    PK2N STUDIO
+
+</div>
+
+
+</div>
+
+
+<script>
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const playerHorse =
+    document.getElementById(
+        "playerHorse"
+    );
+
+
+const target =
+    document.getElementById(
+        "target"
+    );
+
+
+const enemyElements = [
+
+    document.getElementById(
+        "enemy1"
+    ),
+
+    document.getElementById(
+        "enemy2"
+    ),
+
+    document.getElementById(
+        "enemy3"
+    ),
+
+    document.getElementById(
+        "enemy4"
+    ),
+
+    document.getElementById(
+        "enemy5"
+    )
+
+];
+
+
+const scoreElement =
+    document.getElementById(
+        "score"
+    );
+
+
+const timerElement =
+    document.getElementById(
+        "timer"
+    );
+
+
+const messageElement =
+    document.getElementById(
+        "message"
+    );
+
+
+const possessionElement =
+    document.getElementById(
+        "possession"
+    );
+
+
+const languageButton =
+    document.getElementById(
+        "languageButton"
+    );
+
+
+const newGameButton =
+    document.getElementById(
+        "newGame"
+    );
+
+
+const controlsElement =
+    document.getElementById(
+        "controls"
+    );
+
+
+const scoreLabel =
+    document.getElementById(
+        "scoreLabel"
+    );
+
+
+const computerScoreLabel =
+    document.getElementById(
+        "computerScoreLabel"
+    );
+
+
+const timeLabel =
+    document.getElementById(
+        "timeLabel"
+    );
+
+
+const riderScoreElements = [
+
+    document.getElementById(
+        "riderScore1"
+    ),
+
+    document.getElementById(
+        "riderScore2"
+    ),
+
+    document.getElementById(
+        "riderScore3"
+    ),
+
+    document.getElementById(
+        "riderScore4"
+    ),
+
+    document.getElementById(
+        "riderScore5"
+    )
+
+];
+
+
+/* =========================================
+   PLAYER
+========================================= */
+
+let player = {
+
+    x: 50,
+
+    y: 50,
+
+    speed: 0.72
+
+};
+
+
+/* =========================================
+   BALL
+========================================= */
+
+let ball = {
+
+    x: 50,
+
+    y: 50
+
+};
+
+
+/* =========================================
+   COMPUTER RIDERS
+========================================= */
+
+let enemies = [
+
+    {
+        element: enemyElements[0],
+        x: 15,
+        y: 20,
+        speed: 0.68,
+        hasBall: false,
+        score: 0,
+        nextMilestone: 25
+    },
+
+    {
+        element: enemyElements[1],
+        x: 82,
+        y: 20,
+        speed: 0.70,
+        hasBall: false,
+        score: 0,
+        nextMilestone: 25
+    },
+
+    {
+        element: enemyElements[2],
+        x: 18,
+        y: 75,
+        speed: 0.69,
+        hasBall: false,
+        score: 0,
+        nextMilestone: 25
+    },
+
+    {
+        element: enemyElements[3],
+        x: 80,
+        y: 75,
+        speed: 0.71,
+        hasBall: false,
+        score: 0,
+        nextMilestone: 25
+    },
+
+    {
+        element: enemyElements[4],
+        x: 50,
+        y: 15,
+        speed: 0.70,
+        hasBall: false,
+        score: 0,
+        nextMilestone: 25
+    }
+
+];
+
+
+/* =========================================
+   GAME VARIABLES
+========================================= */
+
+let score = 0;
+
+let nextPlayerMilestone = 25;
+
+let time = 60;
+
+let gameRunning = false;
+
+let possession = "free";
+
+let ballCarrier = null;
+
+let keys = {};
+
+let timerInterval;
+
+let scatterLock = false;
+
+
+/* =========================================
+   LANGUAGE
+========================================= */
+
+let language = "en";
+
+
+const translations = {
+
+    en: {
+
+        language: "پښتو",
+
+        yourScore: "YOUR SCORE",
+
+        computerScore:
+            "COMPUTER RIDERS",
+
+        time: "TIME",
+
+        free:
+            "Get to the ball before the computer riders do.",
+
+        playerHas:
+            "You have the ball! Get it to the GOAL.",
+
+        computerHas:
+            "A computer rider has the ball! Stop them!",
+
+        playerGoal:
+            "GOAL! +10 POINTS!",
+
+        computerGoal:
+            "COMPUTER RIDER SCORED! +10 POINTS.",
+
+        knocked:
+            "You stole the ball!",
+
+        scatter:
+            "25 POINT MILESTONE! Everyone scatters!",
+
+        newGame:
+            "↻ NEW GAME",
+
+        controls:
+            "<b>CONTROLS</b><br><br>" +
+            "↑ W — Move Up<br>" +
+            "↓ S — Move Down<br>" +
+            "← A — Move Left<br>" +
+            "→ D — Move Right<br><br>" +
+            "🟤 Get the ball first.<br>" +
+            "🏁 Take it to the GOAL.<br>" +
+            "🐎 Stop the computer riders.<br><br>" +
+            "⭐ Reach 25 points to scatter everyone."
+
+    },
+
+
+    ps: {
+
+        language: "English",
+
+        yourScore:
+            "ستاسو نمرې",
+
+        computerScore:
+            "د کمپیوټر سپاره",
+
+        time:
+            "وخت",
+
+        free:
+            "له کمپیوټر سپرو مخکې توپ واخلئ.",
+
+        playerHas:
+            "توپ ستاسو سره دی! د ګول سیمې ته یې یوسئ.",
+
+        computerHas:
+            "د کمپیوټر سپرو توپ اخیستی! مخه یې ونیسئ.",
+
+        playerGoal:
+            "ګول! +۱۰ نمرې!",
+
+        computerGoal:
+            "د کمپیوټر سپور ګول وکړ! +۱۰ نمرې.",
+
+        knocked:
+            "تاسو توپ ترې واخیست!",
+
+        scatter:
+            "۲۵ نمرې! ټول سپاره خپرېږي!",
+
+        newGame:
+            "↻ نوې لوبه",
+
+        controls:
+            "<b>لارښوونې</b><br><br>" +
+            "↑ W — پورته<br>" +
+            "↓ S — ښکته<br>" +
+            "← A — چپ<br>" +
+            "→ D — ښي<br><br>" +
+            "🟤 لومړی توپ واخلئ.<br>" +
+            "🏁 د ګول سیمې ته یې یوسئ.<br>" +
+            "🐎 د کمپیوټر سپرو مخه ونیسئ.<br><br>" +
+            "⭐ ۲۵ نمرې ترلاسه کړئ څو ټول خپاره شي."
+
+    }
+
+};
+
+
+/* =========================================
+   KEYBOARD
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        keys[
+            event.key.toLowerCase()
+        ] = true;
+
+    }
+);
+
+
+document.addEventListener(
+    "keyup",
+    function(event) {
+
+        keys[
+            event.key.toLowerCase()
+        ] = false;
+
+    }
+);
+
+
+/* =========================================
+   DISTANCE
+========================================= */
+
+function distance(a, b) {
+
+    return Math.hypot(
+        a.x - b.x,
+        a.y - b.y
+    );
+
+}
+
+
+/* =========================================
+   RANDOM POSITION
+========================================= */
+
+function randomPosition() {
+
+    return {
+
+        x:
+            10 +
+            Math.random() * 80,
+
+        y:
+            10 +
+            Math.random() * 80
+
+    };
+
+}
+
+
+/* =========================================
+   SCATTER RIDERS
+========================================= */
+
+function scatterPlayers() {
+
+    /*
+       Prevent the function being triggered
+       multiple times in the same frame.
+    */
+
+    if (
+        scatterLock
+    )
+        return;
+
+
+    scatterLock =
+        true;
+
+
+    /*
+       Remove current possession.
+    */
+
+    possession =
+        "free";
+
+    ballCarrier =
+        null;
+
+
+    enemies.forEach(
+        enemy => {
+
+            enemy.hasBall =
+                false;
+
+        }
+    );
+
+
+    /*
+       Create separated random positions.
+    */
+
+    let positions = [];
+
+
+    positions.push({
+
+        x: player.x,
+
+        y: player.y
+
+    });
+
+
+    enemies.forEach(
+        enemy => {
+
+            let position;
+
+            let valid = false;
+
+
+            while (
+                !valid
+            ) {
+
+                position =
+                    randomPosition();
+
+
+                valid =
+                    positions.every(
+                        existing =>
+                            distance(
+                                position,
+                                existing
+                            ) > 12
+                    );
+
+            }
+
+
+            positions.push(
+                position
+            );
+
+
+            enemy.x =
+                position.x;
+
+            enemy.y =
+                position.y;
+
+        }
+    );
+
+
+    /*
+       Move the player too,
+       so everybody scatters.
+    */
+
+    let playerPosition;
+
+    let validPlayer =
+        false;
+
+
+    while (
+        !validPlayer
+    ) {
+
+        playerPosition =
+            randomPosition();
+
+
+        validPlayer =
+            enemies.every(
+                enemy =>
+                    distance(
+                        playerPosition,
+                        enemy
+                    ) > 12
+            );
+
+    }
+
+
+    player.x =
+        playerPosition.x;
+
+    player.y =
+        playerPosition.y;
+
+
+    /*
+       Put ball somewhere else.
+    */
+
+    placeBall();
+
+
+    target.style.display =
+        "flex";
+
+
+    drawPlayer();
+
+    drawEnemies();
+
+    drawBall();
+
+
+    messageElement.textContent =
+        translations[
+            language
+        ].scatter;
+
+
+    updatePossessionDisplay();
+
+
+    /*
+       Unlock after a short delay.
+    */
+
+    setTimeout(
+        function() {
+
+            scatterLock =
+                false;
+
+        },
+        600
+    );
+
+}
+
+
+/* =========================================
+   CHECK PLAYER MILESTONE
+========================================= */
+
+function checkPlayerMilestone() {
+
+    if (
+        score >=
+        nextPlayerMilestone
+    ) {
+
+        nextPlayerMilestone +=
+            25;
+
+
+        scatterPlayers();
+
+    }
+
+}
+
+
+/* =========================================
+   CHECK COMPUTER MILESTONE
+========================================= */
+
+function checkComputerMilestone(
+    enemy
+) {
+
+    if (
+        enemy.score >=
+        enemy.nextMilestone
+    ) {
+
+        enemy.nextMilestone +=
+            25;
+
+
+        scatterPlayers();
+
+    }
+
+}
+
+
+/* =========================================
+   BALL POSITION
+========================================= */
+
+function placeBall() {
+
+    ball.x =
+        25 +
+        Math.random() * 50;
+
+    ball.y =
+        20 +
+        Math.random() * 60;
+
+}
+
+
+/* =========================================
+   DRAW PLAYER
+========================================= */
+
+function drawPlayer() {
+
+    playerHorse.style.left =
+        player.x + "%";
+
+    playerHorse.style.top =
+        player.y + "%";
+
+}
+
+
+/* =========================================
+   DRAW BALL
+========================================= */
+
+function drawBall() {
+
+    target.style.left =
+        ball.x + "%";
+
+    target.style.top =
+        ball.y + "%";
+
+}
+
+
+/* =========================================
+   DRAW ENEMIES
+========================================= */
+
+function drawEnemies() {
+
+    enemies.forEach(
+        enemy => {
+
+            enemy.element.style.left =
+                enemy.x + "%";
+
+            enemy.element.style.top =
+                enemy.y + "%";
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   UPDATE SCORES
+========================================= */
+
+function updateScores() {
+
+    scoreElement.textContent =
+        score;
+
+
+    enemies.forEach(
+        (enemy, index) => {
+
+            riderScoreElements[
+                index
+            ].textContent =
+                enemy.score;
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   POSSESSION DISPLAY
+========================================= */
+
+function updatePossessionDisplay() {
+
+    if (
+        possession === "player"
+    ) {
+
+        possessionElement.textContent =
+            "YOU HAVE THE BALL";
+
+    }
+
+    else if (
+        possession === "computer"
+    ) {
+
+        possessionElement.textContent =
+            "COMPUTER HAS THE BALL";
+
+    }
+
+    else {
+
+        possessionElement.textContent =
+            "BALL FREE";
+
+    }
+
+}
+
+
+/* =========================================
+   PLAYER MOVEMENT
+========================================= */
+
+function updatePlayer() {
+
+    if (
+        !gameRunning
+    )
+        return;
+
+
+    let dx = 0;
+
+    let dy = 0;
+
+
+    if (
+        keys["arrowup"] ||
+        keys["w"]
+    ) {
+
+        dy -=
+            player.speed;
+
+    }
+
+
+    if (
+        keys["arrowdown"] ||
+        keys["s"]
+    ) {
+
+        dy +=
+            player.speed;
+
+    }
+
+
+    if (
+        keys["arrowleft"] ||
+        keys["a"]
+    ) {
+
+        dx -=
+            player.speed;
+
+    }
+
+
+    if (
+        keys["arrowright"] ||
+        keys["d"]
+    ) {
+
+        dx +=
+            player.speed;
+
+    }
+
+
+    player.x +=
+        dx;
+
+    player.y +=
+        dy;
+
+
+    player.x =
+        Math.max(
+            8,
+            Math.min(
+                92,
+                player.x
+            )
+        );
+
+
+    player.y =
+        Math.max(
+            8,
+            Math.min(
+                92,
+                player.y
+            )
+        );
+
+
+    drawPlayer();
+
+
+    if (
+        possession === "free"
+    ) {
+
+        checkPlayerForBall();
+
+    }
+
+
+    if (
+        possession === "computer"
+    ) {
+
+        checkPlayerTackle();
+
+    }
+
+
+    if (
+        possession === "player"
+    ) {
+
+        checkPlayerGoal();
+
+    }
+
+}
+
+
+/* =========================================
+   PLAYER GETS BALL
+========================================= */
+
+function checkPlayerForBall() {
+
+    if (
+        distance(
+            player,
+            ball
+        ) < 6
+    ) {
+
+        possession =
+            "player";
+
+        ballCarrier =
+            null;
+
+
+        enemies.forEach(
+            enemy => {
+
+                enemy.hasBall =
+                    false;
+
+            }
+        );
+
+
+        target.style.display =
+            "none";
+
+
+        messageElement.textContent =
+            translations[
+                language
+            ].playerHas;
+
+
+        updatePossessionDisplay();
+
+    }
+
+}
+
+
+/* =========================================
+   COMPUTER GETS BALL
+========================================= */
+
+function checkComputerForBall() {
+
+    if (
+        possession !== "free"
+    )
+        return;
+
+
+    let closestEnemy =
+        null;
+
+
+    let closestDistance =
+        Infinity;
+
+
+    enemies.forEach(
+        enemy => {
+
+            const d =
+                distance(
+                    enemy,
+                    ball
+                );
+
+
+            if (
+                d <
+                closestDistance
+            ) {
+
+                closestDistance =
+                    d;
+
+                closestEnemy =
+                    enemy;
+
+            }
+
+        }
+    );
+
+
+    if (
+        closestEnemy &&
+        closestDistance < 5
+    ) {
+
+        possession =
+            "computer";
+
+        ballCarrier =
+            closestEnemy;
+
+
+        closestEnemy.hasBall =
+            true;
+
+
+        target.style.display =
+            "none";
+
+
+        messageElement.textContent =
+            translations[
+                language
+            ].computerHas;
+
+
+        updatePossessionDisplay();
+
+    }
+
+}
+
+
+/* =========================================
+   COMPUTER AI
+========================================= */
+
+function updateEnemies() {
+
+    if (
+        !gameRunning
+    )
+        return;
+
+
+    enemies.forEach(
+        enemy => {
+
+            let targetX;
+
+            let targetY;
+
+
+            /* ==========================
+               BALL CARRIER
+            ========================== */
+
+            if (
+                enemy.hasBall
+            ) {
+
+                /*
+                   Attack nearest goal.
+                */
+
+                const distanceLeft =
+                    Math.abs(
+                        enemy.x - 8
+                    );
+
+
+                const distanceRight =
+                    Math.abs(
+                        enemy.x - 92
+                    );
+
+
+                if (
+                    distanceLeft <
+                    distanceRight
+                ) {
+
+                    targetX =
+                        8;
+
+                }
+
+                else {
+
+                    targetX =
+                        92;
+
+                }
+
+
+                targetY =
+                    50;
+
+            }
+
+
+            /* ==========================
+               SUPPORT RIDERS
+            ========================== */
+
+            else if (
+                possession === "computer" &&
+                ballCarrier
+            ) {
+
+                /*
+                   Spread around the
+                   ball carrier instead
+                   of all sitting together.
+                */
+
+                const index =
+                    enemies.indexOf(
+                        enemy
+                    );
+
+
+                const angle =
+                    index *
+                    1.25;
+
+
+                targetX =
+                    ballCarrier.x +
+                    Math.cos(
+                        angle
+                    ) *
+                    15;
+
+
+                targetY =
+                    ballCarrier.y +
+                    Math.sin(
+                        angle
+                    ) *
+                    15;
+
+            }
+
+
+            /* ==========================
+               FREE BALL
+            ========================== */
+
+            else if (
+                possession === "free"
+            ) {
+
+                targetX =
+                    ball.x;
+
+                targetY =
+                    ball.y;
+
+            }
+
+
+            /* ==========================
+               PLAYER HAS BALL
+            ========================== */
+
+            else {
+
+                targetX =
+                    player.x;
+
+                targetY =
+                    player.y;
+
+            }
+
+
+            const dx =
+                targetX -
+                enemy.x;
+
+
+            const dy =
+                targetY -
+                enemy.y;
+
+
+            const d =
+                Math.hypot(
+                    dx,
+                    dy
+                );
+
+
+            if (
+                d > 1
+            ) {
+
+                enemy.x +=
+                    dx /
+                    d *
+                    enemy.speed;
+
+
+                enemy.y +=
+                    dy /
+                    d *
+                    enemy.speed;
+
+            }
+
+
+            enemy.x =
+                Math.max(
+                    8,
+                    Math.min(
+                        92,
+                        enemy.x
+                    )
+                );
+
+
+            enemy.y =
+                Math.max(
+                    8,
+                    Math.min(
+                        92,
+                        enemy.y
+                    )
+                );
+
+        }
+    );
+
+
+    drawEnemies();
+
+
+    if (
+        possession === "free"
+    ) {
+
+        checkComputerForBall();
+
+    }
+
+
+    if (
+        possession === "player"
+    ) {
+
+        checkComputerTackle();
+
+    }
+
+
+    if (
+        possession === "computer"
+    ) {
+
+        checkComputerGoal();
+
+    }
+
+}
+
+
+/* =========================================
+   COMPUTER TACKLES PLAYER
+========================================= */
+
+function checkComputerTackle() {
+
+    for (
+        let enemy of enemies
+    ) {
+
+        if (
+            distance(
+                enemy,
+                player
+            ) < 4.5
+        ) {
+
+            possession =
+                "free";
+
+
+            ballCarrier =
+                null;
+
+
+            ball.x =
+                player.x;
+
+
+            ball.y =
+                player.y;
+
+
+            target.style.display =
+                "flex";
+
+
+            drawBall();
+
+
+            enemies.forEach(
+                rider => {
+
+                    rider.hasBall =
+                        false;
+
+                }
+            );
+
+
+            messageElement.textContent =
+                translations[
+                    language
+                ].knocked;
+
+
+            updatePossessionDisplay();
+
+
+            return;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================
+   PLAYER TACKLES COMPUTER
+========================================= */
+
+function checkPlayerTackle() {
+
+    if (
+        !ballCarrier
+    )
+        return;
+
+
+    if (
+        distance(
+            player,
+            ballCarrier
+        ) < 5
+    ) {
+
+        ballCarrier.hasBall =
+            false;
+
+
+        ballCarrier =
+            null;
+
+
+        possession =
+            "player";
+
+
+        messageElement.textContent =
+            translations[
+                language
+            ].knocked;
+
+
+        updatePossessionDisplay();
+
+    }
+
+}
+
+
+/* =========================================
+   PLAYER GOAL
+========================================= */
+
+function checkPlayerGoal() {
+
+    const leftGoal =
+        player.x <= 17 &&
+        player.y >= 20 &&
+        player.y <= 80;
+
+
+    const rightGoal =
+        player.x >= 83 &&
+        player.y >= 20 &&
+        player.y <= 80;
+
+
+    if (
+        leftGoal ||
+        rightGoal
+    ) {
+
+        score +=
+            10;
+
+
+        possession =
+            "free";
+
+
+        ballCarrier =
+            null;
+
+
+        enemies.forEach(
+            enemy => {
+
+                enemy.hasBall =
+                    false;
+
+            }
+        );
+
+
+        messageElement.textContent =
+            translations[
+                language
+            ].playerGoal;
+
+
+        updateScores();
+
+
+        updatePossessionDisplay();
+
+
+        placeBall();
+
+
+        target.style.display =
+            "flex";
+
+
+        drawBall();
+
+
+        /*
+           Check whether player
+           reached 25/50/75 etc.
+        */
+
+        checkPlayerMilestone();
+
+    }
+
+}
+
+
+/* =========================================
+   COMPUTER GOAL
+========================================= */
+
+function checkComputerGoal() {
+
+    if (
+        !ballCarrier
+    )
+        return;
+
+
+    const enemy =
+        ballCarrier;
+
+
+    const leftGoal =
+        enemy.x <= 17 &&
+        enemy.y >= 20 &&
+        enemy.y <= 80;
+
+
+    const rightGoal =
+        enemy.x >= 83 &&
+        enemy.y >= 20 &&
+        enemy.y <= 80;
+
+
+    if (
+        leftGoal ||
+        rightGoal
+    ) {
+
+        /*
+           ONLY THIS RIDER
+           receives the points.
+        */
+
+        enemy.score +=
+            10;
+
+
+        enemy.hasBall =
+            false;
+
+
+        possession =
+            "free";
+
+
+        ballCarrier =
+            null;
+
+
+        messageElement.textContent =
+            translations[
+                language
+            ].computerGoal;
+
+
+        updateScores();
+
+
+        updatePossessionDisplay();
+
+
+        placeBall();
+
+
+        target.style.display =
+            "flex";
+
+
+        drawBall();
+
+
+        /*
+           Check this individual
+           rider's milestone.
+        */
+
+        checkComputerMilestone(
+            enemy
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   GAME LOOP
+========================================= */
+
+function gameLoop() {
+
+    if (
+        !gameRunning
+    )
+        return;
+
+
+    updatePlayer();
+
+    updateEnemies();
+
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+/* =========================================
+   TIMER
+========================================= */
+
+function startTimer() {
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    timerInterval =
+        setInterval(
+            function() {
+
+                if (
+                    !gameRunning
+                )
+                    return;
+
+
+                time--;
+
+
+                timerElement.textContent =
+                    time;
+
+
+                if (
+                    time <= 0
+                ) {
+
+                    gameRunning =
+                        false;
+
+
+                    clearInterval(
+                        timerInterval
+                    );
+
+
+                    messageElement.textContent =
+                        "TIME UP!";
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+/* =========================================
+   NEW GAME
+========================================= */
+
+function newGame() {
+
+    score =
+        0;
+
+
+    nextPlayerMilestone =
+        25;
+
+
+    time =
+        60;
+
+
+    gameRunning =
+        true;
+
+
+    possession =
+        "free";
+
+
+    ballCarrier =
+        null;
+
+
+    scatterLock =
+        false;
+
+
+    /*
+       Player starts around centre.
+    */
+
+    player.x =
+        50;
+
+    player.y =
+        50;
+
+
+    /*
+       Reset each computer rider's
+       individual score.
+    */
+
+    enemies.forEach(
+        enemy => {
+
+            enemy.score =
+                0;
+
+            enemy.nextMilestone =
+                25;
+
+            enemy.hasBall =
+                false;
+
+        }
+    );
+
+
+    /*
+       Scatter everyone immediately
+       at the beginning of the game.
+    */
+
+    scatterInitialPositions();
+
+
+    placeBall();
+
+
+    updateScores();
+
+
+    timerElement.textContent =
+        time;
+
+
+    target.style.display =
+        "flex";
+
+
+    messageElement.textContent =
+        translations[
+            language
+        ].free;
+
+
+    updatePossessionDisplay();
+
+
+    drawPlayer();
+
+    drawBall();
+
+    drawEnemies();
+
+
+    startTimer();
+
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+/* =========================================
+   INITIAL SCATTER
+========================================= */
+
+function scatterInitialPositions() {
+
+    let positions = [];
+
+
+    /*
+       Player position.
+    */
+
+    let playerPosition =
+        randomPosition();
+
+
+    player.x =
+        playerPosition.x;
+
+    player.y =
+        playerPosition.y;
+
+
+    positions.push(
+        playerPosition
+    );
+
+
+    /*
+       Find separated positions
+       for all computer riders.
+    */
+
+    enemies.forEach(
+        enemy => {
+
+            let position;
+
+            let valid =
+                false;
+
+
+            while (
+                !valid
+            ) {
+
+                position =
+                    randomPosition();
+
+
+                valid =
+                    positions.every(
+                        existing =>
+                            distance(
+                                position,
+                                existing
+                            ) > 12
+                    );
+
+            }
+
+
+            positions.push(
+                position
+            );
+
+
+            enemy.x =
+                position.x;
+
+            enemy.y =
+                position.y;
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   LANGUAGE BUTTON
+========================================= */
+
+languageButton.addEventListener(
+    "click",
+    function() {
+
+        language =
+            language === "en"
+                ? "ps"
+                : "en";
+
+
+        const t =
+            translations[
+                language
+            ];
+
+
+        languageButton.textContent =
+            t.language;
+
+
+        scoreLabel.textContent =
+            t.yourScore;
+
+
+        computerScoreLabel.textContent =
+            t.computerScore;
+
+
+        timeLabel.textContent =
+            t.time;
+
+
+        newGameButton.textContent =
+            t.newGame;
+
+
+        controlsElement.innerHTML =
+            t.controls;
+
+
+        if (
+            possession === "player"
+        ) {
+
+            messageElement.textContent =
+                t.playerHas;
+
+        }
+
+        else if (
+            possession === "computer"
+        ) {
+
+            messageElement.textContent =
+                t.computerHas;
+
+        }
+
+        else {
+
+            messageElement.textContent =
+                t.free;
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   NEW GAME BUTTON
+========================================= */
+
+newGameButton.addEventListener(
+    "click",
+    newGame
+);
+
+
+/* =========================================
+   START GAME
+========================================= */
+
+newGame();
+
+</script>
+
+</body>
+
+</html>
