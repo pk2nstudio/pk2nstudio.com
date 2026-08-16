@@ -1,23 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>PK2N | Games</title>
 
-
 <style>
-
-/* =====================================================
-   PK2N GAMES PAGE
-===================================================== */
 
 *{
     margin:0;
@@ -25,16 +14,9 @@
     box-sizing:border-box;
 }
 
-
 body{
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+    font-family:Arial, Helvetica, sans-serif;
     min-height:100vh;
-
     background:
         linear-gradient(
             to bottom,
@@ -42,417 +24,251 @@ body{
             #4FA3FF 55%,
             #1E88E5 100%
         );
-
     color:white;
-
     overflow-x:hidden;
-
 }
 
-
-/* =====================================================
+/* =========================
    NAVIGATION
-===================================================== */
+========================= */
 
 nav{
-
     width:100%;
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     padding:25px 70px;
-
     position:relative;
-
     z-index:10;
-
 }
-
 
 .logo{
-
     font-size:34px;
-
     font-weight:bold;
-
 }
-
 
 .menu a{
-
     color:white;
-
     text-decoration:none;
-
     margin-left:35px;
-
     font-size:20px;
-
     transition:.3s;
-
 }
-
 
 .menu a:hover{
-
     color:#FFD54F;
-
 }
 
-
-/* =====================================================
+/* =========================
    HEADER
-===================================================== */
+========================= */
 
 .header{
-
     text-align:center;
-
-    padding:55px 20px 40px;
-
+    padding:55px 20px 50px;
 }
-
 
 .header h1{
-
     font-size:64px;
-
     margin-bottom:15px;
-
-    text-shadow:
-        4px 4px 10px
-        rgba(0,0,0,.35);
-
+    text-shadow:4px 4px 10px rgba(0,0,0,.35);
 }
-
 
 .header p{
-
     font-size:24px;
-
     color:#FFF9C4;
-
     letter-spacing:2px;
-
 }
 
-
-/* =====================================================
+/* =========================
    MAIN CONTAINER
-===================================================== */
+========================= */
 
 .container{
-
     width:90%;
-
     max-width:1200px;
-
     margin:auto;
-
     padding-bottom:80px;
-
 }
 
-
-/* =====================================================
+/* =========================
    GAME SECTION
-===================================================== */
+========================= */
 
 .game-section{
-
-    margin-bottom:55px;
-
+    margin-bottom:60px;
 }
-
 
 .section-title{
-
     font-size:34px;
-
     margin-bottom:25px;
-
     padding-bottom:12px;
-
-    border-bottom:
-        2px solid
-        rgba(255,255,255,.35);
-
-    text-shadow:
-        2px 2px 5px
-        rgba(0,0,0,.3);
-
+    border-bottom:2px solid rgba(255,255,255,.35);
+    text-shadow:2px 2px 5px rgba(0,0,0,.3);
 }
 
-
-/* =====================================================
+/* =========================
    GAME GRID
-===================================================== */
+========================= */
 
 .game-grid{
-
     display:grid;
-
     grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(260px,1fr)
-        );
-
+        repeat(auto-fit,minmax(260px,1fr));
     gap:25px;
-
 }
 
-
-/* =====================================================
+/* =========================
    GAME CARD
-===================================================== */
+========================= */
 
 .game-card{
-
-    background:
-        rgba(0,0,0,.22);
-
-    border:
-        2px solid
-        rgba(255,255,255,.25);
-
+    background:rgba(0,0,0,.22);
+    border:2px solid rgba(255,255,255,.25);
     border-radius:18px;
-
     padding:30px 25px;
-
     text-align:center;
 
     box-shadow:
-        0 12px 25px
-        rgba(0,0,0,.25);
+        0 12px 25px rgba(0,0,0,.25);
 
     transition:.3s;
-
 }
-
 
 .game-card:hover{
-
-    transform:
-        translateY(-7px);
-
-    background:
-        rgba(0,0,0,.30);
-
-    border-color:
-        #FFD54F;
-
+    transform:translateY(-7px);
+    background:rgba(0,0,0,.30);
+    border-color:#FFD54F;
 }
-
 
 .game-icon{
-
     font-size:65px;
-
     margin-bottom:15px;
-
 }
-
 
 .game-card h3{
-
     font-size:25px;
-
     margin-bottom:12px;
-
 }
-
 
 .game-card p{
-
     font-size:17px;
-
     line-height:1.5;
-
     color:#E8F4FF;
-
     min-height:52px;
-
     margin-bottom:22px;
-
 }
 
-
-/* =====================================================
-   FEATURED GAME
-===================================================== */
-
-.featured{
-
-    border:
-        3px solid
-        #FFD54F;
-
-    background:
-
-        linear-gradient(
-            145deg,
-            rgba(0,0,0,.32),
-            rgba(0,0,0,.18)
-        );
-
-}
-
-
-.featured h3{
-
-    color:#FFF9C4;
-
-}
-
-
-/* =====================================================
+/* =========================
    PLAY BUTTON
-===================================================== */
+========================= */
 
 .play-button{
-
     display:inline-block;
-
-    padding:
-        13px 28px;
-
-    background:
-        #FFD54F;
-
+    padding:13px 28px;
+    background:#FFD54F;
     color:#222;
-
     font-size:18px;
-
     font-weight:bold;
-
     border-radius:10px;
-
     text-decoration:none;
-
     transition:.3s;
-
 }
-
 
 .play-button:hover{
-
-    transform:
-        scale(1.06);
-
+    transform:scale(1.06);
 }
 
+/* =========================
+   FEATURED GAME
+========================= */
+
+.featured{
+    border:3px solid #FFD54F;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.18)
+        );
+}
+
+.featured h3{
+    color:#FFF9C4;
+}
+
+/* =========================
+   COMING SOON
+========================= */
 
 .coming-soon{
-
-    background:
-        rgba(255,255,255,.18);
-
+    background:rgba(255,255,255,.18);
     color:white;
-
     cursor:default;
-
 }
 
-
-/* =====================================================
+/* =========================
    FOOTER
-===================================================== */
+========================= */
 
 footer{
-
     text-align:center;
-
-    padding:25px;
-
+    padding:30px;
     font-size:17px;
-
-    background:
-        rgba(0,0,0,.15);
-
+    background:rgba(0,0,0,.15);
 }
 
-
-/* =====================================================
+/* =========================
    MOBILE
-===================================================== */
+========================= */
 
 @media(max-width:700px){
 
     nav{
-
         padding:20px;
-
         flex-direction:column;
-
         gap:15px;
-
     }
-
 
     .menu a{
-
-        margin:
-            0 8px;
-
+        margin:0 8px;
         font-size:16px;
-
     }
-
 
     .header{
-
         padding-top:30px;
-
     }
-
 
     .header h1{
-
         font-size:40px;
-
     }
-
 
     .header p{
-
         font-size:18px;
-
     }
 
-
     .section-title{
-
         font-size:27px;
-
     }
 
 }
 
 </style>
-
 </head>
-
 
 <body>
 
 
-<!-- =====================================================
+<!-- =========================
      NAVIGATION
-===================================================== -->
+========================= -->
 
 <nav>
 
     <div class="logo">
-
         ⚔️ PK2N
-
     </div>
-
 
     <div class="menu">
 
@@ -477,10 +293,9 @@ footer{
 </nav>
 
 
-
-<!-- =====================================================
+<!-- =========================
      PAGE HEADER
-===================================================== -->
+========================= -->
 
 <div class="header">
 
@@ -495,9 +310,7 @@ footer{
 </div>
 
 
-
 <div class="container">
-
 
 
 <!-- =====================================================
@@ -507,11 +320,8 @@ footer{
 <section class="game-section">
 
     <h2 class="section-title">
-
         🏔️ ADVENTURE & ACTION
-
     </h2>
-
 
     <div class="game-grid">
 
@@ -543,7 +353,7 @@ footer{
         </div>
 
 
-        <!-- MOUNTAIN TARGET -->
+        <!-- ARCHERY -->
 
         <div class="game-card">
 
@@ -552,18 +362,15 @@ footer{
             </div>
 
             <h3>
-                Mountain Target
+                Mountain Archery
             </h3>
 
             <p>
-                Test your aim in the mountains.
+                Test your aim among the mountains and hit your targets.
             </p>
 
-            <span
-                class="play-button coming-soon">
-
+            <span class="play-button coming-soon">
                 COMING SOON
-
             </span>
 
         </div>
@@ -572,82 +379,6 @@ footer{
     </div>
 
 </section>
-
-
-
-<!-- =====================================================
-     PASHTUN TRADITIONAL GAMES
-===================================================== -->
-
-<section class="game-section">
-
-    <h2 class="section-title">
-
-        🏔️ PASHTUN TRADITIONAL GAMES
-
-    </h2>
-
-
-    <div class="game-grid">
-
-
-        <!-- GILLI DANDA -->
-
-        <div class="game-card">
-
-            <div class="game-icon">
-                🏏
-            </div>
-
-            <h3>
-                Gilli Danda
-            </h3>
-
-            <p>
-                A traditional game brought to the PK2N platform.
-            </p>
-
-            <a
-                href="gilli.html"
-                class="play-button">
-
-                ▶ PLAY GAME
-
-            </a>
-
-        </div>
-
-
-        <!-- BUZKASHI -->
-
-        <div class="game-card">
-
-            <div class="game-icon">
-                🐎
-            </div>
-
-            <h3>
-                Buzkashi
-            </h3>
-
-            <p>
-                Ride, compete and take the ball to victory.
-            </p>
-
-            <span
-                class="play-button coming-soon">
-
-                COMING SOON
-
-            </span>
-
-        </div>
-
-
-    </div>
-
-</section>
-
 
 
 <!-- =====================================================
@@ -657,11 +388,8 @@ footer{
 <section class="game-section">
 
     <h2 class="section-title">
-
         ♟️ BOARD & CLASSIC GAMES
-
     </h2>
-
 
     <div class="game-grid">
 
@@ -779,7 +507,6 @@ footer{
 </section>
 
 
-
 <!-- =====================================================
      SPORTS & SKILL
 ===================================================== -->
@@ -787,11 +514,8 @@ footer{
 <section class="game-section">
 
     <h2 class="section-title">
-
         🎯 SPORTS & SKILL
-
     </h2>
-
 
     <div class="game-grid">
 
@@ -850,7 +574,61 @@ footer{
         </div>
 
 
-        <!-- MOUNTAIN ARCHERY -->
+        <!-- BUZKHASI -->
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🐎
+            </div>
+
+            <h3>
+                Buzkhasi
+            </h3>
+
+            <p>
+                Ride into the traditional game of Buzkhasi and compete for the ball.
+            </p>
+
+            <a
+                href="buzkhasi.html"
+                class="play-button">
+
+                ▶ PLAY GAME
+
+            </a>
+
+        </div>
+
+
+        <!-- GILLI -->
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🪵
+            </div>
+
+            <h3>
+                Gilli
+            </h3>
+
+            <p>
+                A traditional skill game brought to the PK2N collection.
+            </p>
+
+            <a
+                href="gilli.html"
+                class="play-button">
+
+                ▶ PLAY GAME
+
+            </a>
+
+        </div>
+
+
+        <!-- MAKHA -->
 
         <div class="game-card">
 
@@ -859,19 +637,20 @@ footer{
             </div>
 
             <h3>
-                Mountain Archery
+                Makha
             </h3>
 
             <p>
-                Aim carefully and hit your targets.
+                Test your skill and accuracy in the traditional game of Makha.
             </p>
 
-            <span
-                class="play-button coming-soon">
+            <a
+                href="makha.html"
+                class="play-button">
 
-                COMING SOON
+                ▶ PLAY GAME
 
-            </span>
+            </a>
 
         </div>
 
@@ -881,7 +660,6 @@ footer{
 </section>
 
 
-
 <!-- =====================================================
      MORE GAMES
 ===================================================== -->
@@ -889,11 +667,8 @@ footer{
 <section class="game-section">
 
     <h2 class="section-title">
-
         🌄 MORE PK2N ADVENTURES
-
     </h2>
-
 
     <div class="game-grid">
 
@@ -905,18 +680,36 @@ footer{
             </div>
 
             <h3>
-                More PK2N Adventures
+                More Adventures
             </h3>
 
             <p>
-                New Pashtun characters, stories and games are coming.
+                New Pashtun characters, stories and games are coming to PK2N.
             </p>
 
-            <span
-                class="play-button coming-soon">
-
+            <span class="play-button coming-soon">
                 COMING SOON
+            </span>
 
+        </div>
+
+
+        <div class="game-card">
+
+            <div class="game-icon">
+                🏔️
+            </div>
+
+            <h3>
+                More Mountain Games
+            </h3>
+
+            <p>
+                New challenges inspired by the mountains and traditions of Khorasan.
+            </p>
+
+            <span class="play-button coming-soon">
+                COMING SOON
             </span>
 
         </div>
@@ -927,18 +720,20 @@ footer{
 </section>
 
 
-
 </div>
 
 
-
-<!-- =====================================================
+<!-- =========================
      FOOTER
-===================================================== -->
+========================= -->
 
 <footer>
 
     ⛰️ PK2N STUDIO
+
+    <br><br>
+
+    PASHTUN GAMES • STORIES • ADVENTURES
 
     <br>
 
@@ -948,5 +743,4 @@ footer{
 
 
 </body>
-
 </html>
