@@ -1,0 +1,717 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PK2N | About</title>
+
+<style>
+
+/* =========================
+   RESET
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+/* =========================
+   BODY
+========================= */
+
+body{
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    min-height:100vh;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #7EC8FF 0%,
+            #4FA3FF 55%,
+            #1E88E5 100%
+        );
+
+    color:white;
+
+    overflow-x:hidden;
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+nav{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:25px 70px;
+
+    position:relative;
+
+    z-index:10;
+
+}
+
+
+.logo{
+
+    font-size:34px;
+
+    font-weight:bold;
+
+}
+
+
+.menu a{
+
+    color:white;
+
+    text-decoration:none;
+
+    margin-left:35px;
+
+    font-size:20px;
+
+    transition:.3s;
+
+}
+
+
+.menu a:hover{
+
+    color:#FFD54F;
+
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+
+    text-align:center;
+
+    padding:
+        60px 20px 45px;
+
+}
+
+
+.header h1{
+
+    font-size:
+        clamp(42px,6vw,70px);
+
+    margin-bottom:15px;
+
+    text-shadow:
+        4px 4px 10px
+        rgba(0,0,0,.35);
+
+}
+
+
+.header p{
+
+    font-size:23px;
+
+    color:#FFF9C4;
+
+    letter-spacing:2px;
+
+}
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.container{
+
+    width:90%;
+
+    max-width:1000px;
+
+    margin:auto;
+
+    padding-bottom:80px;
+
+}
+
+
+/* =========================
+   ABOUT CARD
+========================= */
+
+.about-card{
+
+    background:
+        rgba(0,0,0,.22);
+
+    border:
+        2px solid
+        rgba(255,255,255,.25);
+
+    border-radius:22px;
+
+    padding:
+        45px 50px;
+
+    box-shadow:
+        0 15px 35px
+        rgba(0,0,0,.25);
+
+    margin-bottom:30px;
+
+}
+
+
+/* =========================
+   INTRO
+========================= */
+
+.intro{
+
+    text-align:center;
+
+    border:
+        3px solid
+        #FFD54F;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,0,0,.32),
+            rgba(0,0,0,.18)
+        );
+
+}
+
+
+.intro h2{
+
+    font-size:34px;
+
+    color:#FFF9C4;
+
+    margin-bottom:25px;
+
+}
+
+
+.intro p{
+
+    font-size:20px;
+
+    line-height:1.8;
+
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.about-card h2{
+
+    font-size:32px;
+
+    color:#FFF9C4;
+
+    margin-bottom:20px;
+
+}
+
+
+.about-card p{
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    color:#E8F4FF;
+
+    margin-bottom:20px;
+
+}
+
+
+/* =========================
+   HISTORY MESSAGE
+========================= */
+
+.history{
+
+    text-align:center;
+
+    padding:35px;
+
+    border-radius:18px;
+
+    background:
+        rgba(0,0,0,.18);
+
+    border:
+        2px solid
+        rgba(255,213,79,.45);
+
+}
+
+
+.history .date{
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    color:#FFD54F;
+
+    margin-bottom:15px;
+
+}
+
+
+.history .message{
+
+    font-size:21px;
+
+    line-height:1.7;
+
+}
+
+
+/* =========================
+   COMPETITIONS
+========================= */
+
+.competition{
+
+    border-left:
+        5px solid
+        #FFD54F;
+
+}
+
+
+.competition strong{
+
+    color:#FFD54F;
+
+}
+
+
+/* =========================
+   COMING SOON
+========================= */
+
+.store{
+
+    text-align:center;
+
+    padding:35px;
+
+}
+
+
+.store-icon{
+
+    font-size:65px;
+
+    margin-bottom:15px;
+
+}
+
+
+.store h2{
+
+    margin-bottom:15px;
+
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+
+    text-align:center;
+
+    padding:28px;
+
+    font-size:17px;
+
+    background:
+        rgba(0,0,0,.15);
+
+    color:#E8F4FF;
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+    nav{
+
+        padding:20px;
+
+        flex-direction:column;
+
+        gap:15px;
+
+    }
+
+
+    .menu{
+
+        text-align:center;
+
+    }
+
+
+    .menu a{
+
+        margin:
+            0 8px;
+
+        font-size:16px;
+
+    }
+
+
+    .header{
+
+        padding-top:35px;
+
+    }
+
+
+    .header h1{
+
+        font-size:42px;
+
+    }
+
+
+    .header p{
+
+        font-size:18px;
+
+    }
+
+
+    .about-card{
+
+        padding:
+            30px 22px;
+
+    }
+
+
+    .about-card h2{
+
+        font-size:27px;
+
+    }
+
+
+    .about-card p{
+
+        font-size:17px;
+
+    }
+
+
+    .intro p{
+
+        font-size:18px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+
+    <div class="logo">
+        ⚔️ PK2N
+    </div>
+
+    <div class="menu">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="games.html">
+            Games
+        </a>
+
+        <a href="about.html">
+            About
+        </a>
+
+        <a href="#">
+            Contact
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+
+<div class="header">
+
+    <h1>
+        🏔️ ABOUT PK2N
+    </h1>
+
+    <p>
+        PASHTUN GAMES • STORIES • CULTURE
+    </p>
+
+</div>
+
+
+<!-- =========================
+     MAIN CONTENT
+========================= -->
+
+<div class="container">
+
+
+    <!-- INTRO -->
+
+    <div class="about-card intro">
+
+        <h2>
+            Welcome to PK2N
+        </h2>
+
+        <p>
+
+            Welcome to the
+            <strong>
+                first ever Pashtun gaming platform
+            </strong>.
+
+        </p>
+
+    </div>
+
+
+    <!-- HISTORY -->
+
+    <div class="about-card">
+
+        <div class="history">
+
+            <div class="date">
+
+                16 August 2026
+
+            </div>
+
+            <div class="message">
+
+                On this day, we have made history.
+
+                <br><br>
+
+                PK2N is more than just a collection
+                of games created to celebrate
+                Pashtun culture, stories, traditions
+                and creativity through gaming.
+
+                <br><br>
+
+                Today marks the start of a new journey,
+                and
+                <strong>
+                    you are a part of this history.
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- OUR VISION -->
+
+    <div class="about-card">
+
+        <h2>
+            🌄 Our Vision
+        </h2>
+
+        <p>
+
+            Every game, every character and every
+            idea on PK2N is part of a growing
+            Pashtun gaming world.
+
+        </p>
+
+        <p>
+
+            Our goal is to create games that people
+            can enjoy while also bringing elements
+            of Pashtun identity and culture into
+            the world of gaming.
+
+        </p>
+
+    </div>
+
+
+    <!-- COMPETITIONS -->
+
+    <div class="about-card competition">
+
+        <h2>
+            🏆 Competitions & Prizes
+        </h2>
+
+        <p>
+
+            We will also be holding
+            <strong>
+                regular competitions and challenges
+            </strong>,
+
+            giving players the opportunity to
+            compete, have fun and
+            <strong>
+                win real prizes
+            </strong>.
+
+        </p>
+
+        <p>
+
+            Our prizes will eventually be available
+            through
+            <strong>
+                PK2N stores, coming soon
+            </strong>.
+
+        </p>
+
+    </div>
+
+
+    <!-- STORE -->
+
+    <div class="about-card store">
+
+        <div class="store-icon">
+            🛍️
+        </div>
+
+        <h2>
+            PK2N Stores
+        </h2>
+
+        <p>
+
+            Our stores are coming soon.
+
+            <br>
+
+            More details about prizes,
+            merchandise and future PK2N
+            products will be announced
+            as the platform grows.
+
+        </p>
+
+    </div>
+
+
+    <!-- FINAL MESSAGE -->
+
+    <div class="about-card intro">
+
+        <h2>
+            This Is Only The Beginning
+        </h2>
+
+        <p>
+
+            <strong>
+                Welcome to PK2N.
+            </strong>
+
+            <br>
+
+            Welcome to the journey.
+
+        </p>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    ⛰️ PK2N STUDIO
+
+    <br>
+
+    KHYBER PAKHTUNKHWA
+
+</footer>
+
+
+</body>
+
+</html>
+```
